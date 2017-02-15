@@ -1,0 +1,8 @@
+
+** Modulo controlmonitoring
+ 1. INSERT INTO privileges (descrip) VALUES ('controlmonitoring');  
+
+
+** Modulo freight:
+** Modulo fleet:
+ 1. INSERT INTO privileges (descrip) VALUES ('fleet');

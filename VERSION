@@ -1,0 +1,13 @@
+
+Updates:
+
+* 26 21:06:18 COT 2012: se crea gpsChartsjson.
+* 28 14:13:27 COT 2013: reverse geocoding user application (dashboard.html).
+* 29 09:11:31 COT 2013: nuevo favicon.
+* 29 09:56:14 COT 2013: zoom mapas usuarios (dashboard.js).
+* 29 14:53:16 COT 2013: "last entry", para determinar el ultimo ingreso del usuario al sistema.
+* 29 17:30:49 COT 2013: logo Rastree en user application (ui/style.css y templates/user/*).
+* 30 10:15:15 COT 2013: se pone "seguimiento satelital" en la navbar de user application.  
+* 30 19:59:52 COT 2013: se crea "/admin/userperfil" para motrar los datos del usuario dueño de la sesión.
+* 6 12:38:52 COT 2013: se crea "/user/printreportday" para que se puede imprimir los reportes diarios.
+* mar ago 12 18:32:22 COT 2014: Se cambia el mensaje cuando los clientes tiene el servicio suspendido.

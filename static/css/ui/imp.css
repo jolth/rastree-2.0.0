@@ -1,0 +1,16 @@
+/* CSS printable */
+/*a, a:visited {
+text-decoration: none;
+}*/
+/** {*/
+/*background: transparent !important;*/
+/*color: #000 !important;
+box-shadow: none !important;
+text-shadow: none !important;
+filter: none !important;
+-ms-filter: none !important;
+*/
+a {
+color: #0088cc;
+}
+.muted {font-size:.7em;}

@@ -1,0 +1,38 @@
+$def with (session, form, msg=None, msgerr=None)
+
+$# Nombre del cliente:
+$var username: $session.username.nombre1.lower().capitalize() $session.username.apellido1.lower().capitalize()
+<h2>Agregar GPS</h2>
+
+$#<p>La sesion esta: $session</p>
+$#<p>ID: $session.clienteId</p>
+
+$if not form.valid: <p class="notifi">Intenta de Nuevo</p>
+$if msgerr and form.valid: <p class="notifi">Intenta de Nuevo</p>
+<form id="myform" method="post">
+    $:form.render()
+    <input class="boton" type="submit" value="Guardar"/>
+</form>
+
+<div class="error">
+    $if msgerr: 
+        <p>Error:</p>
+        <p>$msgerr</p>
+</div>
+<p class="notifi">$msg</p>
+
+<script>
+jQuery(document).ready(function(){
+
+        jQuery('.chzn-select').width('180');
+        jQuery(".chzn-select").chosen();
+
+        // Limpiamos al recargar
+        function resetForm($$form) {
+            $$form.find('input:text, input:password, input:file, select, textarea').val('');
+            $$form.find('input:radio, input:checkbox')
+                 .removeAttr('checked').removeAttr('selected');
+        }
+        resetForm($$('#myform')); 
+});
+</script>

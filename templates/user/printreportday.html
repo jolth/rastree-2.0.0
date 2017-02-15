@@ -1,0 +1,83 @@
+$def with (day, vehicle, report)
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <title>Reporte $vehicle.placa.upper() $day</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap framework -->
+    <link rel="stylesheet" href="/static/user/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/user/bootstrap/css/bootstrap-responsive.min.css">
+    <!-- page css -->
+    <link rel="stylesheet" href="/static/css/ui/imp.css">
+    <!-- printable css -->
+    <!--<link rel="stylesheet" media="print" href="/static/css/ui/printable.css">-->
+    <!-- favicon -->
+    <link rel="shortcut icon" href="/static/ico/favicon.ico">
+    <!--[if lte IE 8]>
+        <link rel="stylesheet" href="/static/css/ui/ie.css" />
+    <![endif]-->
+      
+    <!--[if lt IE 9]>
+    <script src="js/ie/html5.js"></script>
+    <script src="js/ie/respond.min.js"></script>
+    <script src="lib/flot/excanvas.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+<div class="container">
+ <div class="row-fluid">
+    <div class="span12">
+        <blockquote>
+            <strong>$vehicle.placa.upper()</strong> <small>$vehicle.clase $vehicle.marca $vehicle.modelo</small>
+        </blockquote>
+        <div class="row">
+            <div class="span1">
+            </div>
+            <div id="content" class="span10">
+                <table id="table" class="table table-condensed table-striped">
+                    <thead>
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Ubicación</th>
+                            <th>Velocidad</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    $for v in report.list():
+                        <tr>
+                            <td><small>$v.fecha.strftime("%F %H:%M:%S")</small></td>
+                            <td><small>$v.ubicacion</small><br>
+                            <small class="muted">$v.position[1:-1] </small>
+                            </td>
+                            <td><small>$v.velocidad km/h</small></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="span1">
+            </div>
+        </div>
+        <div class="form-actions">
+        <address>
+         <strong>Dev Microsystem S.A.S.</strong><br>
+         RasTree, www.rastree.com<br>
+         Colombia - Manizales, Vía Panamericana 66-41<br>
+         <abbr title="Phone">P:</abbr> (57)(6) 878-8856
+        </address>
+                          
+        <address>
+         <strong>Información</strong><br>
+         <a href="mailto:#">info@devmicrosystem.com</a>
+        </address>
+        </div>
+    </div>
+ </div>
+</div>
+
+<!-- javascript -->
+<script src="/static/user/js/jquery.min.js"></script>
+<!-- main bootstrap js -->
+<script src="/static/user/bootstrap/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,36 @@
+$def with (session, msg=None)
+
+$# Nombre del cliente:
+$var username: $session.username.nombre1.lower().capitalize() $session.username.apellido1.lower().capitalize()
+<h2>Gesti&oacute;n de Eventos</h2>
+<div id="view"></div>
+<p>$msg</p>
+<!--<p><a class="activate_modal" name="first_window" href="#">Primera ventana modal</a></p>-->
+
+<!-- mask modal -->
+<!--<div id="mask" class="close_modal"></div>-->
+<!-- Ventanas Modal -->
+<!--<div id="first_window" class="modal_window1" style="width:95%; height:90%"></div>-->
+
+<!--<script type="text/javascript" src="/static/js/picnet.table.filter.min.js"></script>-->
+
+<!--<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.8.23/jquery-ui.min.js"></script>-->
+<script>
+ jQuery(document).ready(function(){
+    var refreshId = setInterval( function() {
+        viewAjax();
+    }, 60000);
+
+    var viewAjax = function(){
+        jQuery('#view').load('/admin/viewmanagevent');
+    };
+
+    viewAjax();
+    //jQuery(':input').addClass('input');
+    //jQuery(':input').css('padding', '1px');
+
+    //getNumEvents();
+
+ });
+</script>

@@ -1,0 +1,147 @@
+$def with (vehicles, datetime)
+
+$code: 
+    now = datetime.datetime.now()
+
+    def boolconver(bool, status1, status2):
+        return ((bool and status1) or status2) or status1
+            
+    def activity(dt):
+        #now = datetime.datetime.now()
+        td = now - datetime.datetime(dt.year, dt.month, dt.day,
+                            dt.hour, dt.minute, dt.second, dt.microsecond)
+        return datetime.timedelta(td.days, td.seconds)
+    
+    # cada 20min
+    level1 = activity(now - datetime.timedelta(seconds=60*10)) # Online
+    level2 = activity(now - datetime.timedelta(seconds=60*30))
+    level3 = activity(now - datetime.timedelta(seconds=60*50))
+    level4 = activity(now - datetime.timedelta(seconds=60*70))
+    level5 = activity(now - datetime.timedelta(seconds=60*90))
+
+    def Levels(dt):
+        if level2 > activity(dt): return 'Level 1'
+        elif level3 > activity(dt): return 'Level 2'
+        elif level4 > activity(dt): return 'Level 3'
+        else: return 'Level 4'
+
+    def status(dt):
+        return (level1 > activity(dt) and 'online') or Levels(dt)
+
+  <div class="row">
+   <div class="col-xs-12">
+    <div class="table-responsive">
+     <!--<h2>$now</h2>-->
+     <table class="table table-condensed" id="vehiclest">
+      <thead>
+       <tr>
+        <th filter-type='ddl'>Service</th>
+        <th>ID</th><th>Vehicle</th>
+        <th filter-type='ddl'>Ignition</th>
+        <th filter='false'>Speed</th>
+        <th>Datetime</th>
+        <th filter='false'>Activity</th>
+        <th filter-type='ddl'>Status</th>
+       </tr>
+      </thead>
+      <tbody>
+
+    $for v in vehicles:
+        $if v.gps_active:
+            $ sts = status(v.fecha)
+            $ alert = (sts != 'online') and 'alert-danger' or 'alert-success'
+            <tr class="caption $alert" data-position='$v.position' data-location='$v.ubicacion'>
+             <td>$boolconver(v.active, 'active', 'deactivated')</td>
+             <td>$v.name</td>
+             <td class="uppercase">$v.placa</td>
+             <td class="uppercase">$boolconver(v.motor, 'on', 'off')</td>
+             <td>$v.velocidad km/h</td>
+             <td>$v.fecha</td>
+             <!--<td>online | linked</td>-->
+             <td> <!-- Status -->
+              <div class="switch"><input class="gprs" type="checkbox" checked><label></label></div> 
+              <div class="switch"><input class="gps" type="checkbox" checked><label></label></div>
+              <span> [$activity(v.fecha)]</span>
+             </td>
+             <!--<td class="status(v.fecha)">status(v.fecha)</td>-->
+             <td class="$alert">$sts</td>
+            </tr>
+
+      </tbody>
+     </table>
+    </div>
+   </div> <!-- end col -->
+     
+   <!-- Modal -->
+   <!--<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+     <div class="modal-content">
+      <div class="modal-header">
+       <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+       <h4 class="modal-title" id="myLargeModalLabel"></h4>
+      </div>
+      <div class="modal-body">
+       <div id="modal_map" style="width:100%;height:300px;"></div> 
+      </div>
+      <div class="modal-footer">
+       <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+       <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+     </div>
+    </div>
+   </div> -->
+
+   <!--<div class="col-xs-12 col-sm-6 col-md-8">.col-xs-12 .col-sm-6 .col-md-8</div>-->
+   <!--<div class="col-xs-6 col-md-4">.col-xs-6 .col-md-4</div>-->
+  </div> <!-- end row -->
+
+  <!-- modal -->
+  <div class="modal fade in" id="mapModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+          <h4 class="modal-title" id="myLargeModalLabel">Ubicación</h4>
+        </div>
+        <div class="modal-body">
+          <div id="map_canvas" style="width:100%; height:300px;"></div>
+          <div id="info">
+          </div>
+        </div>
+        <div class="modal-footer">
+         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+         <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div>
+  <!-- end modal -->
+
+  <!-- Google Maps. -->
+  <!--<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBiRVq7IVM7BR1Aa2t8xXojO17RRC2G36A&v=3.0&sensor=false&region=CO"></script>-->
+  <script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=false"></script>
+
+  <!-- Javascript -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+  <script>window.jQuery || document.write('<script src="/static/controlmonitoring/js/vendor/jquery-1.11.0.min.js"><\/script>')</script>
+  <!-- Include all compiled plugins (below), or include individual files as needed -->
+  <script src="/static/controlmonitoring/bootstrap-3.2.0-dist/js/bootstrap.min.js"></script>
+  <!-- PicNet Table Filter -->
+  <script src="/static/controlmonitoring/js/picnet.table.filter.min.js"></script>
+
+  <script src="/static/controlmonitoring/js/plugins.js"></script>
+  <script src="/static/controlmonitoring/js/main.js"></script>
+  <script>
+   setTimeout(function() { location.reload() },120000);
+  </script>
+
+  <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+  <!--<script>
+      (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+      function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+      e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+      e.src='//www.google-analytics.com/analytics.js';
+      r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+      ga('create','UA-XXXXX-X');ga('send','pageview');
+  </script> -->

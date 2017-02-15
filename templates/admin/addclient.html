@@ -1,0 +1,51 @@
+$def with (session, form, msg=None, msgerr=None)
+<script src="/static/js/chosen/chosen.jquery.min.js"></script>
+$# Nombre del cliente:
+$var username: $session.username.nombre1.lower().capitalize() $session.username.apellido1.lower().capitalize()
+<h2>Agregar Clientes</h2>
+$if not form.valid: <p class="notifi">Intenta de Nuevo</p>
+$if msgerr and form.valid: <p class="notifi">Intenta de Nuevo</p>
+<form id="myform" method="post">
+    $:form.render()
+    <input class="boton" type="submit" value="Guardar"/>
+</form>
+
+<div class="error">
+    $if msgerr: 
+        <p>Error:</p>
+        <p>$msgerr</p>
+</div>
+<p class="notifi">$msg</p>
+
+<script>
+jQuery(document).ready(function(){
+        // Dropdown
+        jQuery(".chzn-select").chosen();
+        jQuery('.chzn-select').width('180');
+        // Limpiamos al recargar
+        function resetForm($$form) {
+            $$form.find('input:text, input:password, input:file, select, textarea').val('');
+            $$form.find('input:radio, input:checkbox')
+                 .removeAttr('checked').removeAttr('selected');
+        }
+        resetForm($$('#myform')); 
+
+        //jQuery('<tr style="font-size:1.5em;"><th colspan=2>Datos de Contacto</th></tr>')
+        jQuery('<tr></tr><tr style="font-size:1.5em;"><th><td colspan=2 style="font-weight: bold;">Datos de Contacto</td></th></tr>\
+               <tr id="telefonos"><th>Teléfonos: </th><td><a href="javascript:void(0);"> Fijo </a><a href="javascript:void(0);"> Celular </a>\
+               <a href="javascript:void(0);"> Fax </a><a href="javascript:void(0);"> Pbx </a></td></tr>')
+              .insertAfter(jQuery('tbody').children().eq(7));
+        //jQuery('#tel').attr('value','tel1, tel2...n');
+        //jQuery('#tel').click(function(){ jQuery(this).val('');});
+
+        //jQuery('#tele').parent().addClass('tel');
+        jQuery('.tele').parent().parent().addClass('tel');
+
+        jQuery('#email').attr('value','mail@localhost.com');
+        jQuery('#email').click(function(){ jQuery(this).val('');});
+        jQuery('#telefonos a').on('click', function(){
+                    var id = jQuery(this).text().replace(' ', '');
+                    $$('#'+id).parent().parent().removeClass('tel');
+        });
+});
+</script>

@@ -1,0 +1,64 @@
+$def with (session, gps, msg=None)
+<script type="text/javascript" src="/static/js/picnet.table.filter.min.js"></script>
+$# Nombre del cliente:
+$var username: $session.username.nombre1.lower().capitalize() $session.username.apellido1.lower().capitalize()
+<h2>Lista de Dispositivos</h2>
+    <table id='tabla1'>
+        <thead>
+            <tr><th style="border-left:1px solid white;">Nombre</th><th>Tipo</th><th>Fecha</th>
+            <th style="border-right:1px solid white" filter-type="ddl">Activo</th><th style="border-right:1px solid white" filter='false'>Acciones</th></tr>
+        </thead>
+        <tbody>
+            $for i in gps.list():
+                <tr><td>$i.name</td><td>$i.descrip</td>
+                <td>$i.fecha_creacion.strftime("%F %H:%M:%S")</td><td>$i.active</td>
+                <td style="text-align:center;"><a href="/admin/editgps?id=$i.id&amp;name=$i.name" class="edit"></a>
+                <a data-gpsid='$i.id' data-gpsname="$i.name" href="/admin/deletegps" class="delete"></a></td></tr>
+        </tbody>
+    </table>
+<div id="dialogdelete" title="Eliminar Dispositivo" class="hide">
+    <h3>Advertencia</h3>
+    <p>Esta acci&oacute;n borrar&aacute; permanentemente el dispositivo <span style="font-weight:bold;color:#2180CE;"></span> del sistema.</p>
+    <p>¿Est&aacute; seguro que desea realizar esta acci&oacute;n?</p>
+</div>
+<p>$msg</p>
+<script>
+ jQuery(document).ready(function(){
+    // Dialog Delete
+    jQuery('#dialogdelete').dialog({
+             autoOpen: false,
+             width: 500,
+             modal: true,
+             buttons: {
+                "Cancelar": function() {
+                          $$(this).dialog("close");
+                 },
+                "Eliminar": function() {
+                       var id=$$(this).data('data-gpsid');
+                       var name=$$(this).data('data-gpsname');
+                       var url=$$(this).data('data-url');
+                       href = url+'?id='+id+'&amp;name='+name;
+                       //console.log(href);
+                       window.location.href = href;
+                       $$(this).dialog("close");
+                 }
+             }
+    });
+    // Delete link
+    jQuery('.delete').click(function(){
+            var id=$$(this).attr('data-gpsid');
+            var name=$$(this).attr('data-gpsname');
+            var url=$$(this).attr('href');
+            $$('#dialogdelete').data('data-gpsid', id);
+            $$('#dialogdelete').data('data-gpsname', name);
+            $$('#dialogdelete').data('data-url', url);
+            $$('#dialogdelete').find('span').text(name);
+            $$('#dialogdelete').dialog('open');
+            return false;
+    });
+    // TableFilter
+    jQuery('#tabla1').tableFilter();
+    jQuery(':input').addClass('input');
+    jQuery(':input').css('padding', '1px');;
+});
+</script>

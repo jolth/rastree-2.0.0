@@ -1,0 +1,200 @@
+$def with (events)
+    <table id='tabla1'>
+        <thead>
+            <tr><th>Placa</th><th>Unidad</th><th filter="false">Evento</th>
+            <th filter='false'>Ubicaci&oacute;n</th><th style="border-right:1px solid white" filter='false'>Fecha</th><th style="border-left:1px solid white;border-right:1px solid white;" filter="false">Cliente</th>
+            <!--<th filter-type='ddl'>Satelites</th><th style="border-right:1px solid white" filter='false'>Ubicacion</th>-->
+            <th style="border-right:1px solid white;" filter='false'>Gestionar</th></tr>
+        </thead>
+        <tbody>
+            $for i in events:
+                <tr>
+                <td>$i.placa.upper()</td>
+                $if i.tipo_event==1:
+                    <td style="color:#CD0000;">$i.gps_name</td>
+                $else:
+                    <td>$i.gps_name</td>
+                <td>$i.name</td>
+                <td data-position="$i.position">$i.ubicacion</td><td>$i.fecha.strftime("%F %H:%M:%S")</td>
+                <td><a data-id='$i.vehicle_id' data-name="$i.placa.upper()" href="/admin/listingclients" class="search"></a></td>
+                 $#<td><a href="javascript:void(0);" class="map activate_modal" data-position='$i.position' name="first_window"></a></td></tr> 
+                 
+                <td style="text-align:center;" class="state" state="$i.admin_state"><a href="/admin/updateevent?id=$i.id" class="ok"></a>
+                <a data-id='$i.id' data-vehi="$i.placa.upper()" data-name="$i.name" href="/admin/deleteevent" class="delete"></a></td></tr>
+
+                $#<td class="state" state="$i.admin_state"></td></tr>
+        </tbody>
+    </table>
+
+<div id="dialogclients" title="Lista de Contactos" class="users-contain">
+    <p>Los contactos para el veh&iacute;culo <span style="font-weight:bold;color:#2180CE;"></span> son:</p>
+    <table id="phones" class="ui-widget ui-widget-content">
+        <thead>
+            <tr class="ui-widget-header ">
+                <th>Nombre</th>
+                <th>Documento</th>
+            </tr>
+        </thead>
+    </table>
+</div>
+<div id="dialogdelete" title="Eliminar Evento">
+    <h3>Advertencia</h3>
+    <p>Esta acci&oacute;n borrar&aacute; permanentemente el Evento <span style="font-weight:bold;color:#2180CE;"></span> 
+     para el Vehiculo <span style="font-weight:bold;color:#2180CE;" id="veh"></span>.</p>
+    <p>¿Est&aacute; seguro que desea realizar esta acci&oacute;n?</p>
+</div>
+
+<script type="text/javascript" src="/static/js/picnet.table.filter.min.js"></script>
+<!--<script src="/static/js/windowmodal.js"></script>-->
+<script>
+jQuery(document).ready(function(){
+    // Dialog Client
+    jQuery('#dialogclients').dialog({
+             autoOpen: false,
+             width: 500,
+             modal: true,
+             buttons: {
+                "Cerrar": function() {
+                          $$(this).dialog("close");
+                 }
+             }
+    });
+    // Dialog Delete
+    jQuery('#dialogdelete').dialog({
+             autoOpen: false,
+             width: 500,
+             modal: true,
+             buttons: {
+                "Cancelar": function() {
+                          $$(this).dialog("close");
+                 },
+                "Eliminar": function() {
+                       var id=$$(this).data('data-id');
+                       //var name=$$(this).data('data-name');
+                       var url=$$(this).data('data-url');
+                       href = url+'?id='+id//+'&amp;name='+name;
+                       console.log(href);
+                       window.location.href = href;
+                       $$(this).dialog("close");
+                 }
+             }
+    });
+});
+</script>
+<script>
+ jQuery(document).ready(function(){
+    // Capitalize JavaScrip
+    String.prototype.capitalize = function(){
+       return this.replace( /(^|\s)([a-z])/g , function(m,p1,p2){ return p1+p2.toUpperCase(); } );
+    };
+
+    jQuery('#tabla1').tableFilter();
+    jQuery(':input').addClass('input');
+    jQuery(':input').css('padding', '1px');;
+
+    // Delete link
+    jQuery('.delete').click(function(){
+            var id=$$(this).attr('data-id'); // id del evento
+            var name=$$(this).attr('data-name'); // Nombre del Evento 
+            var url=$$(this).attr('href'); // URL que realiza la acción
+            var vehi=$$(this).attr('data-vehi'); // Placa del vehículo
+            $$('#dialogdelete').data('data-id', id);
+            $$('#dialogdelete').data('data-name', name);
+            $$('#dialogdelete').data('data-vehi', vehi);
+            $$('#dialogdelete').data('data-url', url);
+            //$$('#dialogdelete').find('span').text(name.capitalize());
+            $$('#dialogdelete').find('span').text(name);
+            $$('#veh').text(vehi);
+            $$('#dialogdelete').dialog('open');
+            return false;
+    });
+    
+    // link Clients
+    jQuery('.search').click(function(){
+            var id=$$(this).attr('data-id'); // vehicle_id, id del vehículo
+            var name=$$(this).attr('data-name'); // placa del vehículo
+            var url=$$(this).attr('href'); // URL que retorna los clientes para el vehículo
+            //$$('#dialogphones').data('data-id', id);
+            //$$('#dialogdelete').data('data-name', name);
+            //$$('#dialogphones').data('data-url', url);
+            //$$('#dialogdelete').find('span').text(name.capitalize());
+            console.log(url);
+            $$('#dialogclients').find('span').text(name);
+            $$('#dialogclients').dialog('open');
+            
+            //href = url+'?id='+id //+'&amp;name='+name;
+            //console.log(href);
+            
+            jQuery('#phones tbody').remove();
+            var newElement = [];
+            //console.log(id);
+            jQuery.ajax({
+                    //url      : '/admin/listingphones',
+                    url      : url,
+                    data     : {'id': id},
+                    type     : 'GET',
+                    dataType : 'json',
+                    success  : function(json){
+                        jQuery.each(json, function(index, obj){
+                                //newElement.push('<td>'+ obj[index] +'</td>');
+                                newElement.push('<tr><td>'+ (obj[0].replace(/,/g, ' ')).capitalize() +'</td><td>'+ obj[1] +'</td></tr>');
+                            });
+                        //console.log('<tbody>'+ newElement +'</tbody>');
+                        //console.log('<tbody>'+ newElement.join('') +'</tbody>');
+                        jQuery('#phones thead').after('<tbody>'+ newElement.join('') +'</tbody>');
+
+                    },
+                    error    : function(jqXHR, status, error){
+                        console.log("Se produjo un error: " + error);
+                    },
+                    complete : function(jqXHR, status){
+                        console.log("Petición terminada con estado: " + status);
+                        console.log(jqXHR);
+                    }
+            });
+
+            return false;
+    }); 
+////////////////////////////////////////////////////////////////////
+/*                    function initialize(lat, lng) {
+                      var latlng = new google.maps.LatLng(lat,lng);
+                      var options = {
+                        zoom: 19,
+                        center: latlng,
+                        mapTypeId: google.maps.MapTypeId.ROADMAP
+                      };
+                      var map = new google.maps.Map(document.getElementById("first_window"),
+                        options);
+
+                      var image = '/static/img/trunkgreen.png';
+                      var marker = new google.maps.Marker({
+                        position: latlng,
+                        map: map,
+                        icon: image, 
+                        title: "Map"
+                      });
+                    }
+
+                    //jQuery('.activate_modal').click(function(){
+                    jQuery('.map').click(function(){
+                        var position=$$(this).attr('data-position');
+                        console.log(position);
+                        position = position.split(",");
+                        console.log(position);
+                        lat = position[0].substring(1); 
+                        console.log(lat);
+                        //lng = position[1].substring(0, position[1].length - 1);
+                        lng = position[1].substring(0, position[1].indexOf(')'));
+                        console.log(lng);
+                        // obtener el id de la ventana modal almacenado 
+                        // en el name del elemento activado.
+                        var modal_id = jQuery(this).attr('name');
+
+                        // utilizar la función para mostrar
+                        show_modal(modal_id);
+                       
+                        // render map
+                        initialize(lat, lng);      
+                    });*/
+ });
+</script>

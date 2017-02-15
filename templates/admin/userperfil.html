@@ -1,0 +1,97 @@
+$def with (session, cliente)
+
+$# Nombre del cliente:
+$var username: $session.username.nombre1.capitalize() $session.username.apellido1.capitalize()
+$ nombre = cliente.nombre1.capitalize()+' '+(cliente.nombre2 or '').capitalize()+' '+cliente.apellido1.capitalize()+' '+(cliente.apellido2 or '').capitalize()
+<h2>Perfil de Usuario</h2>
+
+$#<p>La sesion esta: $session</p>
+$#<p>ID: $session.clienteId</p>
+<div>
+    <div class="Vu ic">
+        <div class="Xu">
+            <div class="od">
+                <div class="Yf av">
+                   <div class="Zf Yu">Datos Personales</div> 
+                   <div class="Zu"><a href="#">Editar</a></div>
+                </div>
+                <div class="ag">
+                    <div class="Wd dA">Nombre Completo</div>
+                    <div class="Wd cA">
+                        <div class="Ue">
+                            <!--<div>$cliente</div>-->
+                            <!--<div><span class="Si"></span></div>-->
+                            <div><span class="Si">$nombre</span></div>
+                        </div>    
+                    </div>
+                </div>
+                <div class="ag">
+                    <div class="Wd dA">Documento</div>
+                    <div class="Wd cA">
+                        <div class="Ue">
+                            <span class="Si">$cliente.documento</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="ag">
+                    <div class="Wd dA">Fecha Nacimiento</div>
+                    <div class="Wd cA">
+                        <div class="Ue">
+                            <span class="Si">$cliente.fecha_naci</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="od">
+                <div class="Yf av">
+                   <div class="Zf Yu">Datos De Contacto</div> 
+                   <div class="Zu"><a href="#">Editar</a></div>
+                </div>
+                <div class="ag">
+                    <div class="Wd dA">Direcci&oacute;n</div>
+                    <div class="Wd cA">
+                        <div class="Ue">
+                            <!--<div>$cliente</div>-->
+                            <!--<div><span class="Si"></span></div>-->
+                            <div><span class="Si capitalize">$cliente.direccion</span></div>
+                        </div>    
+                    </div>
+                </div>
+                <div class="ag">
+                    <div class="Wd dA">E-mail</div>
+                    <div class="Wd cA">
+                        <div class="Ue">
+                            <span class="Si">$cliente.email</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="ag">
+                    <div class="Wd dA">Tel&eacute;fono:</div>
+                    <div class="Wd cA">
+                        <div class="Ue">
+                            <span class="Si"></span>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    <div class="Ce ic"></div>
+</div>
+
+<script>
+/*jQuery(document).ready(function(){
+
+        jQuery('.chzn-select').width('180');
+        jQuery(".chzn-select").chosen();
+
+        // Limpiamos al recargar
+        function resetForm($$form) {
+            $$form.find('input:text, input:password, input:file, select, textarea').val('');
+            $$form.find('input:radio, input:checkbox')
+                 .removeAttr('checked').removeAttr('selected');
+        }
+        resetForm($$('#myform')); 
+});*/
+</script>

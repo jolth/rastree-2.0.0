@@ -1,0 +1,42 @@
+$def with (session, msg=None)
+
+$# Nombre del cliente:
+$var username: $session.username.nombre1.lower().capitalize() $session.username.apellido1.lower().capitalize()
+<h2>Vista General de Monitoreo</h2>
+<div id="view"></div>
+<p>$msg</p>
+<!--<p><a class="activate_modal" name="first_window" href="#">Primera ventana modal</a></p>-->
+<!-- mask modal -->
+<div id="mask" class="close_modal"></div>
+<!-- Ventanas Modal -->
+<div id="first_window" class="modal_window1" style="width:95%; height:90%"></div>
+<!--<script type="text/javascript" src="/static/js/picnet.table.filter.min.js"></script>-->
+<script>
+ jQuery(document).ready(function(){
+    var refreshId = setInterval( function() {
+        viewAjax();
+    }, 60000);
+
+    var viewAjax = function(){
+        jQuery('#view').load('/admin/viewmonitoreo');
+    };
+
+    viewAjax();
+    //jQuery(':input').addClass('input');
+    //jQuery(':input').css('padding', '1px');
+
+ });
+</script>
+<script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=false"></script>
+<script src="/static/js/windowmodal.js"></script>
+<script>
+jQuery(document).ready(function(){
+    // Aplicamos el modal al <vid> 
+    jQuery('.modal_window1').jtModal();
+
+    jQuery('.close_modal').click(function(){
+        // utilizar la función para cerrar
+         close_modal();
+    });
+});
+</script>

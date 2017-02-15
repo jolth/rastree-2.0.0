@@ -1,0 +1,123 @@
+$def with (content)
+<!DOCTYPE html> 
+<html> 
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>Administrador</title>
+<!--<link rel="icon" href="/static/img/favicon.png" type="image/png" />-->
+<link rel="shortcut icon" href="/static/ico/favicon.ico">
+<link type="text/css" rel="stylesheet" href="/static/css/ai/jquery-ui-1.8.23.custom.css" />
+<link rel="stylesheet" type="text/css" media="all" href="/static/css/ai/style.css" />
+<link rel="stylesheet" href="/static/css/chosen/chosen.css" />
+<link type="text/css" rel="stylesheet" href="/static/css/ai/windowmodal.css" />
+<style>
+    .hide{display:none;}
+</style>
+<!--
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.8.23/jquery-ui.min.js"></script>
+-->
+<script src="/static/js/jquery-1.8.0.min.js"></script>
+<script src="/static/js/jquery-ui-1.8.23.custom.min.js"></script>
+<script src="/static/js/chosen/chosen.jquery.min.js" type="text/javascript"></script>
+<script type="text/javascript">
+jQuery(document).ready(function(){
+    //Menu desplegable
+    //jQuery("#menu ul li ul").hide();
+    jQuery(".hide").hide();
+    jQuery("#menu ul li span.current").addClass("open").next("ul").show();
+    jQuery("#menu ul li span").click(function(){
+        jQuery(this).next("ul").slideToggle("slow").parent("li").siblings("li").find("ul:visible").slideUp("slow");
+        jQuery("#menu ul li").find("span").removeClass("open");
+        jQuery(this).addClass("open");
+    });
+
+    // Gestión de Eventos
+    getNumEvents();
+    setInterval(function(){getNumEvents();}, 20000);
+});
+</script>
+<script>
+    var getNumEvents = function(){ 
+      var numevnt = null;
+      $$.getJSON('/admin/listeventjson', function(data){
+        //console.log(data); 
+        numevnt = data[0].count; 
+        //console.log(numevnt);
+        $$('#badge0').text(numevnt)
+                     .addClass('badge');
+        $$('#badge1').text(numevnt);
+      });
+    };
+</script>
+</head>
+<body>
+
+<div id="pagina">
+    <div id="menu">
+        <h3><a id="namemenu" href="/admin">Gesti&oacute;n Log&iacute;stica</a></h3>
+        <ul>
+            <li><span class="uno"><a href="javascript:void(0);" id="link-posts">Monitoreo <span id="badge0"></span></a></span>
+                
+                <ul class="hide">
+                    <li><a href="/admin/generalview" class="list">Vista General</a></li>
+                    <!--<li><a href="/admin/list" class="list">Listar Veh&iacute;culos</a></li>-->
+                    <li><a href="/admin/managevents" class="list">Eventos <span id="badge1" class="badge"></span></a></li>
+                    <li><a href="?p=posts&amp;sec=list" class="list">Reportes</a></li>
+                </ul>
+            </li>
+            <li><span class="uno"><a href="javascript:void(0);" id="link-multimedia">Dispositivos</a></span>
+                <ul class="hide">
+                    <li><a href="/admin/addgps" class="add">Agregar</a></li>
+                    <li><a href="/admin/listgps" class="list">Listar</a></li>
+                    <!-- <li><a href="?p=multimedia&amp;sec=agregar-galeria-video" class="add">Agregar galer&iacute;a de video</a></li>            
+                    <li><a href="?p=multimedia&amp;sec=listar-galeria-video" class="list">Listar galer&iacute;a de video</a></li> -->
+                </ul>
+            </li>
+            <li><span class="uno"><a href="javascript:void(0);" id="link-categorias">Veh&iacute;culos</a></span>
+                <ul class="hide">
+                    <li><a href="/admin/addvehicle" class="add">Agregar</a></li>
+                    <li><a href="/admin/assignclient" class="add">Asignar Cliente</a></li>
+                    <li><a href="/admin/listvehicle" class="list">Listar</a></li>
+                </ul>
+            </li>
+            <li><span class="uno"><a href="javascript:void(0);" id="link-usuarios">Clientes</a></span>
+                <ul class="hide">
+                    <li><a href="/admin/addclient" class="add">Agregar cliente</a></li>
+                    <li><a href="/admin/listclient" class="list">Listar cliente</a></li>
+                    <li><a href="/admin/adduser" class="add">Agregar usuario</a></li>
+                    <li><a href="/admin/listuser" class="list">Listar usuario</a></li>
+                </ul>
+            </li>
+            <li><span class="uno"><a href="javascript:void(0);" id="link-opciones">Configuraciones</a></span>
+                <ul class="hide">
+                    <li><a href="?p=opciones&amp;sec=opcion-alertas" class="bullet">Alertas</a></li>
+                    <li><a href="?p=opciones&amp;sec=opcion-email" class="bullet">E-mail</a></li>
+                    <li><a href="/admin/sendata" class="bullet">Enviar datos</a></li>
+                    <li><a href="?p=opciones&amp;sec=opcion-llamandas" class="bullet">Llamadas</a></li>
+                </ul>
+            </li>
+            <li><span class="uno"><a id="usermenu" href="javascript:void(0);">$content.username</a></span>
+                <ul>
+                    <li><a href="/admin/userperfil" class="bullet">Editar Perfil</a></li>
+                    <li><a href="/logout" class="logout">Logout</a></li>
+                </ul>
+            </li>
+        </ul>
+        <p>Gesti&oacute;n Log&iacute;stica Vehicular<br />
+        <a href="http://www.devmicrosystem.com" target="_blank">Dev Microsystem</a></p>
+
+  </div>
+    <!--/menu-->
+    <div id="contenido">       
+            
+    $:content
+
+    </div>
+    <!--/contenido-->
+</div>
+<!--/pagina-->
+
+<!-- JavaScript -->
+</body>
+</html>

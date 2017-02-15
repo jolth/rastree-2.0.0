@@ -1,0 +1,124 @@
+$def with (gps, datetime)
+    <table id='tabla1'>
+        <thead>
+            <tr><th style="border-left:1px solid white;">Placa</th><th>Unidad</th><th>Fecha</th><th filter='false'>Velocidad</th>
+            <!--<th filter-type='ddl'>Sat&eacute;lites</th>--><th filter-type='ddl'>Ignición</th><th style="border-right:1px solid white" filter='false'>Ubicaci&oacute;n</th>
+            <th style="border-right:1px solid white;" filter='false'>Map</th>
+            <th filter-type="ddl">Reportando</th></tr>
+        </thead>
+        <tbody>
+            $code:
+                # Date time now 
+                now = datetime.datetime.now()
+                
+                # Device datetime
+                def deviceDate(date):
+                    #return datetime.datetime(date)
+                    #d = datetime.datetime()
+                    #return date.strftime("%Y%m%dT%H%M%S")
+                    devdate = datetime.datetime(int(date.strftime("%Y")), 
+                            int(date.strftime("%m")), int(date.strftime("%d")), int(date.strftime("%H")), 
+                            int(date.strftime("%M")), int(date.strftime("%S")))
+                    return devdate
+
+                # retorna el timpo trascurrido desde que dejo 
+                # de reportar la unidad en segúndos.
+                def timeSeconds(date):
+                    #return (now - deviceDate(date)).seconds
+                    return (now - deviceDate(date))
+
+
+                # now() - 10min: Con señal (Verde)
+                now10 = now + datetime.timedelta(minutes=-10)
+                now30 = now + datetime.timedelta(minutes=-30)
+                now50 = now + datetime.timedelta(minutes=-50)
+                now90 = now + datetime.timedelta(minutes=-90)
+                now120 = now + datetime.timedelta(minutes=-120)
+
+            $for i in gps.list():
+                <tr data-position='$i.position'>
+                 $if i.active:
+                    <td>$i.placa.upper()</td>
+                 $else:
+                    <td style="color:#db3d3d">$i.placa.upper()</td>
+                 <td>$i.name</td><td>$i.fecha.strftime("%F %H:%M:%S")</td>
+                 <td>$i.velocidad km/h</td>
+                 $if i.motor:
+                    <td>On</td>
+                 $else:
+                    <td>Off</td>
+                 <td>$i.ubicacion</td>
+                 <td><a href="javascript:void(0);" class="map activate_modal" data-position='$i.position' name="first_window"></a></td>
+
+                 $# Date Time Device
+                 $# deviceDT = timeSeconds(i.fecha)
+                 $ deviceDT = deviceDate(i.fecha)
+
+                 $# Level1: > 10min < 30min, Level2: > 30min < 50min, Level3: > 50min < 90min, Level4: > 90min < 120min, Level5: > 120min
+                 $if deviceDT < now120:
+                    <td style="background-color:#F6CECE; color:#CD000F">False - Level 5</td>
+                 $elif deviceDT < now90 and deviceDT > now120:
+                    <td style="background-color:#F6CECE; color:#CD000F">False - Level 4</td>
+                 $elif deviceDT < now50 and deviceDT > now90:
+                    <td style="background-color:#F6CECE; color:#CD000F">False - Level 3</td>
+                 $elif deviceDT < now30 and deviceDT > now50:
+                    <td style="background-color:#F6CECE; color:#CD000F">False - Level 2</td>
+                 $elif deviceDT < now10 and deviceDT > now30: 
+                    <td style="background-color:#F6CECE; color:#CD000F">False - Level 1</td>
+                 $else:
+                    <td style="background-color:#BCF5A9; color:#04B404">True</td>
+                </tr>
+        </tbody>
+    </table>
+
+<!--<script type="text/javascript" src="/static/js/jquery-1.7.2.js"></script>-->
+<script type="text/javascript" src="/static/js/picnet.table.filter.min.js"></script>
+<script src="/static/js/windowmodal.js"></script>
+<script>
+ jQuery(document).ready(function(){
+    jQuery('#tabla1').tableFilter();
+    jQuery(':input').addClass('input');
+    jQuery(':input').css('padding', '1px');;
+    
+                    function initialize(lat, lng) {
+                      var latlng = new google.maps.LatLng(lat,lng);
+                      var options = {
+                        zoom: 19,
+                        center: latlng,
+                        mapTypeId: google.maps.MapTypeId.ROADMAP
+                      };
+                      var map = new google.maps.Map(document.getElementById("first_window"),
+                        options);
+
+                      var image = '/static/img/trunkgreen.png';
+                      var marker = new google.maps.Marker({
+                        position: latlng,
+                        map: map,
+                        icon: image, 
+                        title: "Map"
+                      });
+                    }
+
+                    //jQuery('.activate_modal').click(function(){
+                    jQuery('.map').click(function(){
+                        var position=$$(this).attr('data-position');
+                        console.log(position);
+                        position = position.split(",");
+                        console.log(position);
+                        lat = position[0].substring(1); 
+                        console.log(lat);
+                        //lng = position[1].substring(0, position[1].length - 1);
+                        lng = position[1].substring(0, position[1].indexOf(')'));
+                        console.log(lng);
+                        // obtener el id de la ventana modal almacenado 
+                        // en el name del elemento activado.
+                        var modal_id = jQuery(this).attr('name');
+
+                        // utilizar la función para mostrar
+                        show_modal(modal_id);
+                       
+                        // render map
+                        initialize(lat, lng);      
+                    });
+ });
+</script>

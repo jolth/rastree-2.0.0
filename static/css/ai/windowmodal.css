@@ -1,0 +1,29 @@
+#mask{
+position:absolute; /* importante */
+top:0px; /* comenzar desde la parte superior */
+left:0px; /* comenzar desde la izquierda */
+height:100%; /* cubrir toda la página */
+width:100%; /* cubrir toda la página */
+display:none; /* no lo muestran */
+/* estilo */
+background-color: black;
+/*background-color: #CCC;*/
+/*background-color: #ebf1f1;*/
+}
+
+.modalwindow{
+position:absolute; /* importante para que podamos colocarlo en el centro posteriormente */
+display:none; /* no lo muestra */
+color:white;
+border:1px solid #CCC;
+}
+
+/* estilo específico de una ventana modal */
+#modal_window{
+padding:50px;
+border:1px solid gray;
+background:#246493;
+color:black;
+}
+
+

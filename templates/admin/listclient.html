@@ -1,0 +1,164 @@
+$def with (session, clients, msg=None)
+<script type="text/javascript" src="/static/js/picnet.table.filter.min.js"></script>
+
+$# Nombre del cliente:
+$var username: $session.username.nombre1.lower().capitalize() $session.username.apellido1.lower().capitalize()
+<h2>Lista de Clientes</h2>
+
+    <table id='tabla1'>
+        <thead>
+            <tr><th style="border-left:1px solid white;">Cliente</th><th>Documento</th>
+            <th filter='false'>Tipo</th><th filter='false'>G&eacute;nero</th><th filter='false'>Fecha Nac.</th>
+            <th filter='false'>Direccion</th><th filter='false'>Municipio</th><th filter='false'>Tel&eacute;fonos</th>
+            <th style="border-right:1px solid white" filter='false'>E-mail</th><th style="border-right:1px solid white" filter='false'>Acciones</th></tr>
+        </thead>
+        <tbody>
+            $for i in clients:
+                $ nombre = i.nombre1.capitalize()+' '+(i.nombre2 or '').capitalize()+' '+i.apellido1.capitalize()+' '+(i.apellido2 or '').capitalize() 
+                <tr><td>$nombre</td><td>$i.documento</td><td>$i.tipo</td><td>$i.genero</td><td>$i.fecha_naci</td>
+                <td>$i.direccion</td><td>$i.municipio</td>
+                <td><a data-id='$i.id' data-name="$i.nombre1.capitalize() $i.apellido1.capitalize()" href="/admin/listingphones" class="phone"></a></td><td>$i.email</td>
+                <td style="text-align:center;"><a href="/admin/editclient?id=$i.id&amp;name=$i.nombre1" class="edit"></a>
+                <a data-id='$i.id' data-name="$i.nombre1.capitalize() $i.apellido1.capitalize()" href="/admin/deleteclient" class="delete"></a></td></tr>
+        </tbody>
+    </table>
+
+<div id="dialogdelete" title="Eliminar Cliente" class="hide">
+    <h3>Advertencia</h3>
+    <p>Esta acci&oacute;n borrar&aacute; permanentemente el Cliente <span style="font-weight:bold;color:#2180CE;"></span> del sistema.</p>
+    <p>¿Est&aacute; seguro que desea realizar esta acci&oacute;n?</p>
+</div>
+<div id="dialogphones" title="Tel&eacute;fonos Existentes" class="users-contain hide">
+    <!--<h3>Tel&eacute;fonos Existentes</h3>-->
+    <p>Los tel&eacute;fonos del cliente <span style="font-weight:bold;color:#2180CE;"></span> son:</p>
+    <table id="phones" class="ui-widget ui-widget-content">
+        <thead>
+            <tr class="ui-widget-header ">
+                <th>Tipo</th>
+                <th>Número</th>
+            </tr>
+        </thead>
+        <!--<tbody>
+            <tr>
+                <td>Celular</td>
+                <td>3202433506</td>
+            </tr>
+        </tbody>-->
+    </table>
+</div>
+
+<p>$msg</p>
+
+<script>
+ jQuery(document).ready(function(){
+
+    // Dialog Phones
+    jQuery('#dialogphones').dialog({
+             autoOpen: false,
+             width: 500,
+             modal: true,
+             buttons: {
+                "Cerrar": function() {
+                          $$(this).dialog("close");
+                 }/*,
+                "Eliminar": function() {
+                       var id=$$(this).data('data-id');
+                       //var name=$$(this).data('data-name');
+                       var url=$$(this).data('data-url');
+                       href = url+'?id='+id//+'&amp;name='+name;
+                       console.log(href);
+                       window.location.href = href;
+                       $$(this).dialog("close");
+                 }*/
+             }
+    });
+    // link Phones
+    jQuery('.phone').click(function(){
+            var id=$$(this).attr('data-id');
+            var name=$$(this).attr('data-name');
+            var url=$$(this).attr('href');
+            //$$('#dialogphones').data('data-id', id);
+            //$$('#dialogdelete').data('data-name', name);
+            //$$('#dialogphones').data('data-url', url);
+            //$$('#dialogdelete').find('span').text(name.capitalize());
+            $$('#dialogphones').find('span').text(name);
+            $$('#dialogphones').dialog('open');
+            
+            //href = url+'?id='+id //+'&amp;name='+name;
+            //console.log(href);
+            jQuery('#phones tbody').remove();
+            var newElement = [];
+            //console.log(id);
+            jQuery.ajax({
+                    //url      : '/admin/listingphones',
+                    url      : url,
+                    data     : {'id': id},
+                    type     : 'GET',
+                    dataType : 'json',
+                    success  : function(json){
+                        jQuery.each(json, function(index, obj){
+                                //newElement.push('<td>'+ obj[index] +'</td>');
+                                newElement.push('<tr><td>'+ obj[1].capitalize() +'</td><td>'+ obj[0] +'</td></tr>');
+                            });
+                        //console.log('<tbody>'+ newElement +'</tbody>');
+                        //console.log('<tbody>'+ newElement.join('') +'</tbody>');
+                        jQuery('#phones thead').after('<tbody>'+ newElement.join('') +'</tbody>');
+
+                    },
+                    error    : function(jqXHR, status, error){
+                        console.log("Se produjo un error: " + error);
+                    },
+                    complete : function(jqXHR, status){
+                        console.log("Petición terminada con estado: " + status);
+                        console.log(jqXHR);
+                    }
+            });
+
+            return false;
+    });
+
+    // Dialog Delete
+    jQuery('#dialogdelete').dialog({
+             autoOpen: false,
+             width: 500,
+             modal: true,
+             buttons: {
+                "Cancelar": function() {
+                          $$(this).dialog("close");
+                 },
+                "Eliminar": function() {
+                       var id=$$(this).data('data-id');
+                       //var name=$$(this).data('data-name');
+                       var url=$$(this).data('data-url');
+                       href = url+'?id='+id//+'&amp;name='+name;
+                       console.log(href);
+                       window.location.href = href;
+                       $$(this).dialog("close");
+                 }
+             }
+    });
+    // Delete link
+    jQuery('.delete').click(function(){
+            var id=$$(this).attr('data-id');
+            var name=$$(this).attr('data-name');
+            var url=$$(this).attr('href');
+            $$('#dialogdelete').data('data-id', id);
+            //$$('#dialogdelete').data('data-name', name);
+            $$('#dialogdelete').data('data-url', url);
+            //$$('#dialogdelete').find('span').text(name.capitalize());
+            $$('#dialogdelete').find('span').text(name);
+            $$('#dialogdelete').dialog('open');
+            return false;
+    });
+
+    jQuery('#tabla1').tableFilter();
+    jQuery(':input').addClass('input');
+    jQuery(':input').css('padding', '1px');;
+ });
+</script>
+<script>
+// Capitalize JavaScrip
+String.prototype.capitalize = function(){
+    return this.replace( /(^|\s)([a-z])/g , function(m,p1,p2){ return p1+p2.toUpperCase(); } );
+};
+</script>

@@ -1,0 +1,79 @@
+$def with (session, form, msg=None, msgerr=None)
+$# Nombre del cliente:
+$var username: $session.username.nombre1.lower().capitalize() $session.username.apellido1.lower().capitalize()
+<h2>Agregar Veh&iacute;culos</h2>
+$if not form.valid: <p class="notifi">Intenta de Nuevo</p>
+$if msgerr and form.valid: <p class="notifi">Intenta de Nuevo</p>
+<form id="myform" method="post">
+    $:form.render()
+    <input class="boton" type="submit" value="Guardar"/>
+</form>
+<div class="error">
+    $if msgerr: 
+        <p>Error:</p>
+        <p>$msgerr</p>
+</div>
+<p class="notifi">$msg</p>
+<script>
+jQuery(document).ready(function(){
+        // ListGps
+        //jQuery('#gps_id').attr('disabled', 'disabled');
+        jQuery('#gps_id').css('display', 'none');
+        var newElement = [];
+        var newElement1 = [];
+        jQuery.ajax({
+            url      : '/admin/listgspjson',
+            //data     : { 'pais' : country },
+            type     : 'GET',
+            dataType : 'json',
+
+            success  : function(json){
+                jQuery.each(json, function(index, obj){
+                    newElement1.push('<option value=' + obj[0] + '>' + obj[1] + '</option>');
+                    newElement.push('<li id="gps_id_chzn_o_'+ ++index + ' class="active-result">' + obj[1] + '</li>');
+                });
+                jQuery('#gps_id').find(':first').after(newElement1.join(''));
+                $$('#gps_id_chzn ul').find(':first').after(newElement.join(''));
+                console.log(newElement1);
+                console.log(newElement);
+                //jQuery('#gps_id').chosen();
+                //jQuery(".chzn-select").chosen();
+            },
+            error    : function(jqXHR, status, error){
+                console.log("Se produjo un error: " + error);
+            },
+            complete : function(jqXHR, status){
+                console.log("Petición terminada con estado: " + status);
+                console.log(jqXHR);
+                //jQuery('#gps_id').removeAttr('disabled');
+                //$$('#gps_id_chzn').css('display','inline-block');
+                //$$('#gps_id_chzn').addClass('chzn-container-active');
+                jQuery('#gps_id').chosen();
+                //jQuery(".chzn-select").chosen();
+            }
+        });
+
+        //jQuery(".chzn-select").chosen();
+        //jQuery('.chzn-select').width('180');
+
+        //jQuery('#gps_id').chosen();
+        //$$('#gps_id_chzn').css('display','none');
+        //$$('#gps_id_chzn').click(function(){console.log(this); $$(this).addClass('chzn-container-active')});
+
+        jQuery("#marca_id").chosen();
+        jQuery("#clase_id").chosen();
+        jQuery("#combustible_id").chosen();
+        jQuery("#carroceria_id").chosen();
+        jQuery("#linea_id").chosen();
+        jQuery("#color_id").chosen();
+        jQuery("#servicio_id").chosen();
+
+        // Limpiamos al recargar
+        function resetForm($$form) {
+            $$form.find('input:text, input:password, input:file, select, textarea').val('');
+            $$form.find('input:radio, input:checkbox')
+                 .removeAttr('checked').removeAttr('selected');
+        }
+        resetForm($$('#myform')); 
+});
+</script>

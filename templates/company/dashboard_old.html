@@ -1,0 +1,13 @@
+$def with (session)
+<h1>Company $session.company.name.capitalize()</h1>
+<p>
+Nit: $session.company.document <br />
+Direccion: $session.company.direccion <br />
+E-mail: $session.company.email <br />
+Sitio Web: $session.company.sitio_web <br />
+</p>
+<p>You are: $session.username.nombre1.capitalize() $session.username.apellido1.capitalize()</p>
+
+
+<br />
+<a href="/logout">Logout</a>

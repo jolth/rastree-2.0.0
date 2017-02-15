@@ -1,0 +1,147 @@
+body {
+color: #3E3E3E;
+font: 90% "Open Sans", "lucida grande", "Segoe UI", arial, verdana, "lucida sans unicode", tahoma, sans-serif;
+/*font: 75% arial,helvetica,sans-serif;*/
+/*font-family: Verdana;*/
+background-color: #FFF;
+font-size: 90%; /* importante tamaño relativo para todos */
+/*IE6*/
+text-align: center;
+}
+
+#login-box {
+width:590px;
+vertical-align: middle;
+position: middle;
+margin-top: -205px;
+margin-left: -242px;
+position: absolute;
+top: 50%;
+left: 50%;
+
+/*
+width: 590px;
+margin: 0 auto;
+padding: 5px;
+text-align: left;
+border: 1px solid #888;
+*/
+
+/*1*/
+text-shadow: #355782 0 1px 2px;
+-webkit-text-shadow: #355782 0 1px 2px;
+moz-text-shadow: #355782 0 1px 2px;
+}
+
+
+
+#car {
+width: 310px;
+height: 160px;
+padding: 70px 0 0 200px;
+background: url('/static/img/intro_gmys.png') transparent no-repeat 0 0;
+margin: 40px 0 30px 100px;
+}
+
+
+#car #form {
+padding: 0px 10% 0 0;
+margin: 0;
+}
+
+#car .submit {
+width: 95%;
+float: left;
+display: block;
+text-align: right; 
+}
+
+#car #submit {
+clear: both;
+padding: 15px 51px;
+border: 0;
+margin: 15px 0 0 155px;
+background: url('/static/img/login-btn.png') transparent no-repeat 0 0;
+}
+
+.boton:hover {
+color: #333;
+border-top: 1px #0070CC solid;
+border-right: 1px #006AC1 solid;
+border-bottom: 1px #005CA6 solid;
+border-left: 1px #006AC1 solid;
+-moz-box-shadow: 0 1px 1px rgba(0,0,0,.3), inset 0 0 3px #35bff4;
+-webkit-box-shadow: 0 1px 1px rgba(0,0,0,.3), inset 0 0 3px #35bff4;
+box-shadow: 0 1px 1px rgba(0,0,0,.3), inset 0 0 3px #35bff4;
+}
+.boton {
+/*display: block;
+background-color: #008AD0; 
+color: white;
+border: solid 1px #8ED8F8;
+margin: 2% 0 0 75%;
+font-weight: bold;
+-webkit-box-shadow: 2px 2px 5px #333;
+-moz-box-shadow: 2px 2px 5px #333;
+filter: shadow(color=#333, direction=135, strength=2);*/
+
+border-top: 1px #2270AB solid;
+border-right: 1px #18639A solid;
+border-bottom: 1px #0F568B solid;
+border-left: 1px #18639A solid;
+background:#2180CE;
+filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#33a0e8', endColorstr='#2180ce');
+background: -webkit-gradient(linear, left top, left bottom, from(#33A0E8), to(#2180CE));
+background: -moz-linear-gradient(top, #33A0E8, #2180CE);
+text-shadow: #355782 0 1px 2px;
+-webkit-text-shadow: #355782 0 1px 2px;
+-moz-text-shadow: #355782 0 1px 2px;
+-moz-box-shadow: 0 1px 1px rgba(0, 0, 0, .3), inset 0 1px 0 #83c5f1;
+-webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, .3), inset 0 1px 0 #83c5f1;
+box-shadow:0 1px 1px rgba(0, 0, 0, .3), inset 0 1px 0 #83c5f1;
+/* Texto */
+text-align: center;
+color: #FFF;
+/* Mouse */
+cursor: pointer;
+overflow: visible;
+}
+
+form input {
+border-radius: 3px;
+-webkit-border-radius: 3px;
+-moz-border-radius: 3px;
+/* width/height box */
+padding: 3px 5px;
+
+font-size: 13px;
+font-weight: 400;
+}
+
+
+
+#car label {
+display: block;
+color: #FFF;
+padding-bottom: 5px;
+padding-right: 0px;
+margin-right: 0px;
+float: left;
+width: 70px;
+text-align: right;
+margin-top: 1%;
+font-weight: 550;
+}
+
+.input {
+/**/
+/*font-size: small;*/
+border: 1px solid #BBB;       
+background: #FFF;
+color: #2E2E2E;
+}
+
+input {
+margin-top: 3px;
+}
+

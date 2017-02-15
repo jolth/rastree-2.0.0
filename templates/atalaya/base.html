@@ -1,0 +1,126 @@
+$def with (page, title=None)
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html lang="es" class="no-js"> <!--<![endif]-->
+ <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Copyright (c) 2014 Dev Microsystem S.A.S.
+   *
+   * Licensed under the Apache License, Version 2.0 (the "License");
+   * you may not use this file except in compliance with the License.
+   * You may obtain a copy of the License at
+   *
+   *     http://www.apache.org/licenses/LICENSE-2.0
+   *
+   * Unless required by applicable law or agreed to in writing, software
+   * distributed under the License is distributed on an "AS IS" BASIS,
+   * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   * See the License for the specific language governing permissions and
+   * limitations under the License.
+   *
+   * Author: Jorge A. Toro - jorge.toro@devmicrosystem.com
+   *
+   * 
+   *
+  -->
+  <title>Atalaya\
+    $if title: | $title\
+  </title>
+  <meta name="description" content="Rastree, rastree, monitoreo, monitoree, rastree sus activos moviles">
+  <meta name="keywords" content="monitoreo satelital, seguimiento vehicular, avl, seguimiento satelital, rastreo satelital, localización gps, gps,">
+  <meta name="author" content="Jorge A. Toro">
+  <meta name="Copyright" content="© 2014 Dev Microsystem S.A.S">
+  <meta name="robots" content="index, follow">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- favicon.ico and apple-touch-icon.png -->
+  <link rel="icon" href="/static/img/favicon.png" sizes="16x16 32x32" type="image/png">
+
+  <!--
+  <link rel="apple-touch-icon" href="/static/img/apple_touch_icon/touch-icon-iphone.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/static/img/apple_touch_icon/touch-icon-ipad.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="/static/img/apple_touch_icon/touch-icon-iphone-retina.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="/static/img/apple_touch_icon/touch-icon-ipad-retina.png">
+  -->
+
+  <!-- CSS3 -->
+  <!--<link rel="stylesheet" href="/static/atalaya/css/normalize.css">
+  <link rel="stylesheet" href="/static/atalaya/css/main.css">-->
+  <!--<link rel="stylesheet" media="print" href="/static/css/atalaya/print.css">-->
+
+  <!-- Bootstrap -->
+  <link href="/static/atalaya/bootstrap-3.1.1-dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+  <!-- Script -->
+  <script src="/static/atalaya/js/vendor/modernizr-2.6.2.min.js"></script>
+
+ </head>
+ <body>
+  <!--[if lt IE 7]>
+   <p class="browsehappy">You are using an <strong>outdated</strong> browser. 
+   Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+  <![endif]-->
+  <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+   <div class="navbar-header">
+    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+     <span class="sr-only">Toggle navigation</span>
+     <span class="icon-bar"></span>
+     <span class="icon-bar"></span>
+     <span class="icon-bar"></span>
+    </button>
+    <a class="navbar-brand" href="#">Atalaya</a>
+   </div>
+
+   <div class="collapse navbar-collapse navbar-ex1-collapse">
+    <!--<p class="navbar-text pull-right"><a href="/logout" class="navbar-link">Logout</a></p>-->
+    <ul class="nav navbar-nav navbar-right">
+    $ nombre = sesion.username.nombre1.capitalize()+' '+(sesion.username.nombre2 or '').capitalize()+' '+sesion.username.apellido1.capitalize()+' '+(sesion.username.apellido2 or '').capitalize()
+     <p class="navbar-text">Acceso como <a href="#" class="navbar-link"><span class="text-info">$nombre </span>[$sesion.user]</a></p>
+     <li class="active"><a href="#">Dashboard</a></li>
+     <li><a href="#">Settings</a></li>
+     <li><a href="#">Profile</a></li>
+     <li><a href="#">Help</a></li>
+     <li><a href="/logout" title="Logout"><span class="glyphicon glyphicon-log-out text-info"></span></a></li>
+     <li><a href="#"></a></li>
+    </ul>
+    <!--<p class="navbar-text pull-right">Acceso como <a href="#" class="navbar-link">Homer J. Simpson</a></p>-->
+   </div>
+  </nav>
+
+  $:page
+
+  <!-- Google Maps. -->
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBiRVq7IVM7BR1Aa2t8xXojO17RRC2G36A&v=3.0&sensor=false&region=CO"></script>
+
+  <!-- Javascript -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+  <script>window.jQuery || document.write('<script src="/static/atalaya/js/vendor/jquery-1.11.0.min.js"><\/script>')</script>
+  <!-- Include all compiled plugins (below), or include individual files as needed -->
+  <script src="/static/atalaya/bootstrap-3.1.1-dist/js/bootstrap.min.js"></script>
+
+  <script src="/static/atalaya/js/plugins.js"></script>
+  <script src="/static/atalaya/js/main.js"></script>
+
+  <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+  <!--<script>
+      (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+      function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+      e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+      e.src='//www.google-analytics.com/analytics.js';
+      r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+      ga('create','UA-XXXXX-X');ga('send','pageview');
+  </script> -->
+
+ </body>
+</html>

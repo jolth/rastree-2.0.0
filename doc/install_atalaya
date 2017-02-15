@@ -1,0 +1,8 @@
+
+
+1. Creamos los privilegios:
+
+INSERT INTO privileges (descrip) VALUES ('atalaya');
+
+
+2.   
