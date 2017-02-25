@@ -1,3 +1,5 @@
 '2.0.0' => ' 03/05/2016
-- se crea db.show_alv para saber a que vehiculos se les debe prestar el
-  servicio de monitore, gestión y soporte. 
+    - se crea db.show_alv para saber a que vehiculos se les debe prestar el
+    servicio de monitore, gestión y soporte. 
+2.0.1 => feb 25 12:46:15 COT 2017
+    - add functionality odometer to the user app.
