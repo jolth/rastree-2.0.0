@@ -176,11 +176,17 @@ $def with (session, vehicles)
                  <div class="section-header">
                   <h5>Estadisticas de Vehículos</h5>
                  </div>
+                 <div class="section-body">
+                  <div class="table-responsive">
+                   <table class="table">
+                       <thead style="text-transform:uppercase"><tr><th>Placa</th><th>Odómeter</th><th></th></tr></thead>
+                       <tbody>
                     $for i in v:
                         $if i['active']:
-                            <p><strong
-                                style="text-transform:uppercase">$i['placa']:</strong> [odómetro: $i['odometer']]</p>
-                 <div class="section-body">
+                            <tr scope="row" style="font-size:.8em;text-transform:uppercase"><th>$i['placa']</th><td>$i['odometer']</td><td></td></tr>
+                       </tbody>
+                   </table>
+                  </div>
                  </div>
                 </div>                
 
