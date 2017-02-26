@@ -466,7 +466,7 @@ def listingVehicleClient(client_id):
        >>> 
     """
     from web.db import sqlquote
-    return config.DB.query("""SELECT v.id, lp.gps_id, v.placa, 
+    return config.DB.query("""SELECT v.id, lp.gps_id, v.placa, lp.odometer 
             lp.velocidad, lp.fecha, vs.motor, lp.ubicacion, lp.position, v.active
             FROM vehiculos v
             INNER JOIN clientes_vehiculos AS cv ON (cv.vehiculo_id = v.id)
