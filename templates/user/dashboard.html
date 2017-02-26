@@ -142,43 +142,29 @@ $def with (session, vehicles)
                          </div>
                          <!-- Lista de Vehículos -->
                          <ul class="list user_list" id="listvehicle">
-                            $for i in vehicles.list():
-                                $if i.active:
-                                    <li id="$i.placa">
-                                    $ motor = i.motor and 'Encendido' or 'Apagado'
-                                    $# motor = i.motor and 'on' or 'off'
-                                    $ type_label = i.motor and 'label-success' or 'label-important'
+                            $code:
+                                v = list(vehicles.list())
+                                
+
+                            $for i in v:
+                                $if i['active']:
+                                    <li id="$i['placa']">
+                                    $ motor = i['motor'] and 'Encendido' or 'Apagado'
+                                    $ type_label = i['motor'] and 'label-success' or 'label-important'
                                     <span class="label $type_label pull-right sl_status">$motor</span>
                                     <!-- Usado con geocoding OSM -->
-                                    <a href="javascript:void(0)" class="sl_name" data-position="$i.position[1:-1]" rel="popover" data-original-title="Ubicación" data-content="$i.ubicacion">$i.placa</a>
+                                    <a href="javascript:void(0)"
+                                        class="sl_name" data-position="$i['position'][1:-1]" rel="popover" data-original-title="Ubicación" data-content="$i.ubicacion">$i.placa</a>
                                     <!-- Usado para generar regeocoding con google maps -->
                                     <!--<a href="javascript:void(0)" class="sl_name" data-position="$i.position[1:-1]" rel="popover" data-original-title="Ubicación" data-content="">$i.placa</a>-->
-                                    <small class="center_speed"> $i.velocidad km/h </small><br />
-                                    <small class="s_color sl_email">$i.fecha.strftime("%F %H:%M:%S")</small>
+                                    <small class="center_speed">$i['velocidad'] km/h </small><br />
+                                    <small class="s_color sl_email">$i['fecha'].strftime("%F %H:%M:%S")</small>
                                 $else:
                                     <li>
-                                    <a href="javascript:void(0)" style="color:#9B9B9B;">$i.placa.upper()</a>
+                                    <a href="javascript:void(0)" style="color:#9B9B9B;text-transform:upperase">$i['placa']</a>
                                     <!--<small style="color:red;padding-left:10%;">El vehículo tiene el servicio suspendido.</small><br />-->
                                     <small style="color:red;padding-left:10%;">Servicio suspendido temporalmente por falta de pago.</small><br />
                                 </li>
-                          <!--<li>
-                            <span class="label label-success pull-right sl_status">on</span>
-                            <a href="#" class="sl_name" rel="popover" data-original-title="Ubicación" data-content="RUEDA MILLONARIA PEREIRA, Calle 18 # CARRERA 7, Pereira, Colombia">rjm270</a>
-                            <small class="center_speed"> 30 km/h </small><br />
-                            <small class="s_color sl_email">1 min</small>
-                          </li>
-                          <li>
-                            <span class="label label-success pull-right sl_status">on</span>
-                            <a href="#" class="sl_name">ttq920</a>
-                            <small class="center_speed"> 71 km/h </small><br />
-                            <small class="s_color sl_email">Diana Duque</small>
-                          </li>
-                          <li>
-                            <span class="label label-important pull-right sl_status">off</span>
-                            <a href="#" class="sl_name">zhk978</a>
-                            <small class="center_speed"> 0 km/h </small><br />
-                            <small class="s_color sl_email">Yuri Toro</small>
-                          </li>-->
                          </ul>
                         <div class="pagination"><ul class="paging bottomPaging"></ul></div>
                        </div>
@@ -190,6 +176,10 @@ $def with (session, vehicles)
                  <div class="section-header">
                   <h5>Estadisticas de Vehículos</h5>
                  </div>
+                    $v
+                    $for i in v:
+                        $if i['active']:
+                            <p><strong style="text-transform:uppercase">$i['placa']:</strong></p>
                  <div class="section-body">
                  </div>
                 </div>                
