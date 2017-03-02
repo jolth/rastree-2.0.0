@@ -170,24 +170,6 @@ $def with (session, vehicles)
                        <!-- End List -->
                  </div>
                 </div>
-                <!-- estadisticas -->
-                <div class="section section-small">
-                 <div class="section-header">
-                  <h5>Estadisticas de Vehículos</h5>
-                 </div>
-                 <div class="section-body">
-                  <div class="table-responsive">
-                   <table class="table">
-                       <thead style="text-transform:uppercase"><tr><th>Placa</th><th>Odómeter</th><th></th></tr></thead>
-                       <tbody>
-                    $for i in v:
-                        $if i['active']:
-                            <tr scope="row" style="font-size:.8em;text-transform:uppercase"><th>$i['placa']</th><td>$i['odometer']</td><td></td></tr>
-                       </tbody>
-                   </table>
-                  </div>
-                 </div>
-                </div>                
 
             </div><!-- end span2 -->
 
@@ -206,6 +188,30 @@ $def with (session, vehicles)
                 </div>                
             </div>
         </div><!-- end row-fluid -->
+
+      <div class="row-fluid">
+       <div class="span12">
+                <!-- estadisticas -->
+                <div class="section section-small">
+                 <div class="section-header">
+                  <h5>Estadisticas de Vehículos</h5>
+                 </div>
+                 <div class="section-body">
+                  <div class="table-responsive">
+                   <table class="table">
+                       <thead style="text-transform:uppercase"><tr><th>Placa</th><th>Odómeter</th><th></th></tr></thead>
+                       <tbody>
+                    $for i in v:
+                        $if i['active']:
+                            <tr scope="row" style="font-size:.8em;text-transform:uppercase"><th>$i['placa']</th><td>$i['odometer']</td><td></td></tr>
+                       </tbody>
+                   </table>
+                  </div>
+                 </div>
+                </div>                
+       </div>
+      </div>
+
     </div><!-- end container-fluid -->
  </div><!-- end wrapper -->
 </div><!-- end root -->
