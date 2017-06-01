@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import web
 from common import Sesion
-
+import datetime
 from view import render
 
 urls = (
@@ -28,7 +28,8 @@ class dashboard:
     def GET(self):
         from db import listingVehicleClient
         #return render.user.monitoreo(web.ctx.path, web.ctx.session) 
-        return render.user.dashboard(web.ctx.session, listingVehicleClient(web.ctx.session.clienteId))
+        return render.user.dashboard(web.ctx.session,
+                listingVehicleClient(web.ctx.session.clienteId), datetime)
 
 class eventos:
     @Sesion

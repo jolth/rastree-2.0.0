@@ -1,4 +1,4 @@
-$def with (session, vehicles)
+$def with (session, vehicles, datetime)
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -201,9 +201,15 @@ $def with (session, vehicles)
                    <table class="table">
                        <thead style="text-transform:uppercase"><tr><th>Placa</th><th>Odómetro (km)</th><th>Horómetro</th></tr></thead>
                        <tbody>
+                    $code:
+                        def horometer(sec):
+                            return datetime.timedelta(seconds=sec)
+
+
                     $for i in v:
                         $if i['active']:
-                            <tr scope="row" style="font-size:.8em"><th class="uppercase">$i['placa']</th><td>$i['odometer']</td><td>$i['horometer']</td></tr>
+                            $ hm = horometer(i['horometer'])
+                            <tr scope="row" style="font-size:.8em"><th class="uppercase">$i['placa']</th><td>$i['odometer']</td><td>$hm</td></tr>
                        </tbody>
                    </table>
                   </div>
