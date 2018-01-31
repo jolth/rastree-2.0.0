@@ -44,6 +44,7 @@ $(document).ready(function() {
         device.ign = children[3].outerText;
         device.speed = children[4].outerText;
         device.datetime = children[5].outerText;
+        device.link = "http://maps.google.com/maps?q=" + device.position; 
 
         $('#myLargeModalLabel').html(device.street);
         $('#info').html("<br><p><strong>placa: </strong>"+ device.placa +
@@ -52,7 +53,8 @@ $(document).ready(function() {
         "</p><p><strong>position: </strong>" + device.position +
         "</p><p><strong>ignition: </strong>" + device.ign +
         "</p><p><strong>speed: </strong>" + device.speed +
-        "</p><p><strong>datetime: </strong>" +  device.datetime + "</p>"
+        "</p><p><strong>datetime: </strong>" +  device.datetime + 
+        "</p><p><strong>link: </strong><a href='"+ device.link + "' target=_blank>" + device.link + "</p>"
         );
     });
 
