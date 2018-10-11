@@ -9,6 +9,7 @@ __license__   = "BSD"
 
 # Producción
 DB = web.database(dbn='postgres', user='postgres', pw='qwerty', db='rastree')
+#DB = web.database(dbn='postgres', user='rastree', pw='qwerty', db='rastree')
 
 transaction = DB.transaction()
 
