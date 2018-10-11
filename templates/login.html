@@ -115,6 +115,10 @@ $def with (msg=None)
     <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/static/ico/apple-touch-icon-72-precomposed.png">
     <link rel="apple-touch-icon-precomposed" href="/static/ico/apple-touch-icon-57-precomposed.png">-->
     <link rel="shortcut icon" href="static/ico/favicon.ico">
+
+    <!-- OpenLayers CSS -->
+    <link rel="stylesheet" href="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.2.0/css/ol.css" type="text/css">
+
   </head>
 
   <body>
@@ -166,8 +170,31 @@ $def with (msg=None)
     <script src="../assets/js/bootstrap-typeahead.js"></script>
     -->
 
+    <!-- index with google maps>
     <script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=false"></script>
     <script src="static/js/includes/custom.js"></script>
+    -->
+    <!-- OpenLayers JS-->
+    <script src="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.2.0/build/ol.js"></script>
+    <script type="text/javascript">
+      var map = new ol.Map({
+        target: 'map',
+        layers: [
+          new ol.layer.Tile({
+            source: new ol.source.OSM()
+          })
+        ],
+        controls: ol.control.defaults({
+          zoom: false,
+          attribution: false,
+          rotate: false
+        }),
+        view: new ol.View({
+          center: ol.proj.fromLonLat([37.41, 8.82]),
+          zoom: 2
+        })
+      });
+    </script>
 
   </body>
 </html>
