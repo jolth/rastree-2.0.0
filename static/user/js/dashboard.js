@@ -38,10 +38,13 @@
         //* google map
         //map_dashboard.init();
         //map_dashboard.init(5.06798, -75.51738);
-        map_dashboard.init(5.06798, -75.51738, 6);
-
-        //* maps vehicles
-        maps_vehicle.init();
+        /* general map */
+        //map_dashboard.init(5.06798, -75.51738, 6);
+        /* maps vehicles */
+        //maps_vehicle.init();
+        /*Leaflet*/
+        mapLeafletDashboard.init(5.06798, -75.51738, 2);
+        markerLeaflet.init();
 	});
 
 	//* filterable list
@@ -119,7 +122,6 @@
 			);
 		}
 	};
-
 //* google map 
 map_dashboard = {
     init: function(lat, lng, zm){
@@ -147,7 +149,6 @@ map_dashboard = {
         google.maps.event.addDomListener(window, 'load', initialize);
     }*/
 };
-
 //* map vehicle 
 map_vehicle = {
     init: function(lat, lng, zm, ubicacion){
@@ -186,7 +187,6 @@ map_vehicle = {
         google.maps.event.addDomListener(window, 'load', initialize);
     }*/
 };
-
 //* ubicación del vehículo en el mapa.
 maps_vehicle = {
     init: function(){
@@ -206,12 +206,17 @@ maps_vehicle = {
             });
     }
 };
+/* Leaflet */
+var tile_layer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png')
 
+mapLeafletDashboard = {
+  init: function (latitude, longitude, zoom) {
+    var map = L.map('map_canvas', {
+      center: [latitude, longitude],
+      zoom: zoom,
+    });
 
-
-
-
-
-
-
+    tile_layer.addTo(map);
+  }
+}
 
