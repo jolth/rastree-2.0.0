@@ -40,7 +40,7 @@
         //map_dashboard.init(5.06798, -75.51738);
         /* general map */
         //map_dashboard.init(5.06798, -75.51738, 6);
-        /* maps vehicles */
+        /* maps vehicles event */
         //maps_vehicle.init();
         /*Leaflet*/
         mapLeafletDashboard.init(5.06798, -75.51738, 2);
@@ -207,11 +207,12 @@ maps_vehicle = {
     }
 };
 /* Leaflet */
-var tile_layer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png')
+var tile_layer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution: 'OSM'})
+var map;
 
 mapLeafletDashboard = {
-  init: function (latitude, longitude, zoom) {
-    var map = L.map('map_canvas', {
+  init: function(latitude, longitude, zoom) {
+    map = L.map('map_canvas', {
       center: [latitude, longitude],
       zoom: zoom,
     });
@@ -220,3 +221,25 @@ mapLeafletDashboard = {
   }
 }
 
+markerLeaflet = {
+  init: function() {
+    $('.sl_name').on(
+      'click',
+      function() {
+        //console.log('clic: ' + this);
+        //console.log('position: ' + $(this).attr('data-position'));
+        var position = $(this).attr('data-position').split(",");
+        var address = $(this).attr('data-content')
+        console.log('latitude: ' + position[0]);
+        console.log('longitude: ' + position[1]);
+        console.log(address);
+        markerLeaflet.mark(position[0], position[1], 16, address);
+        //console.log('position: ' + $(this).attr('data-position'));
+        //console.log('[position]: ' + position[0]);
+      });
+  },
+  mark: function(latitude, longitude, zoom, address) {
+    map.setView([latitude, longitude], zoom);
+    var marker = L.marker([latitude, longitude]).addTo(map);
+  }
+};
