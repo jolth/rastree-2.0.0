@@ -219,27 +219,27 @@ mapLeafletDashboard = {
 
     tile_layer.addTo(map);
   }
-}
+};
 
 markerLeaflet = {
   init: function() {
     $('.sl_name').on(
       'click',
       function() {
-        //console.log('clic: ' + this);
-        //console.log('position: ' + $(this).attr('data-position'));
         var position = $(this).attr('data-position').split(",");
-        var address = $(this).attr('data-content')
-        console.log('latitude: ' + position[0]);
-        console.log('longitude: ' + position[1]);
-        console.log(address);
+        var address = $(this).attr('data-content');
         markerLeaflet.mark(position[0], position[1], 16, address);
         //console.log('position: ' + $(this).attr('data-position'));
-        //console.log('[position]: ' + position[0]);
       });
   },
   mark: function(latitude, longitude, zoom, address) {
     map.setView([latitude, longitude], zoom);
     var marker = L.marker([latitude, longitude]).addTo(map);
+    var coordinates = latitude + "," + longitude;
+    marker.bindPopup("<a href='http://maps.google.com/maps?q=" + coordinates + "' target='_blank'>" + address + "</a>").openPopup();
+    /*var popup = L.popup()
+    .setLatLng([latitude, longitude])
+    .setContent(address)
+    .openOn(map);*/
   }
 };
