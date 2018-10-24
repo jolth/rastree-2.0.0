@@ -251,7 +251,7 @@ get_events = {
                 //console.log(url);
                 //Eliminamos la tabla de reportes si existe:
                 $('#tbreport').remove();
-                var table = '<table id="tbreport" class="table table-hover table-condensed table-bordered"><thead><th>Fecha</th><th>Ubicación</th><th>Velocidad</th><th>Evento</th><head>'
+                var table = '<table id="tbreport" class="table table-hover table-condensed table-bordered"><thead><th>Fecha</th><th>Ubicación</th><th>Velocidad</th><th>Eventos</th><head>'
                
                 // AJAX
                 jQuery.ajax({
