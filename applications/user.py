@@ -74,19 +74,17 @@ class printreportday:
         http://0.0.0.0:8080/user/printreportday?carid=427&date=23-10-2018
         """
         i = web.input(carid=None, date=None)
-        #from db import reportday, listVehicle, listingVehicleClient
+        # from db import reportday, listVehicle, listingVehicleClient
         from db import allevent, listVehicle, listingVehicleClient
-        #try:
+        try:
             # return render.user.printreportday(
             #    i.date, listVehicle(i.carid), reportday(i.carid, i.date))
-            #return render.user.printreportday(
-            #    i.date, listVehicle(i.carid), allevent(i.carid, i.date))
-        #except:
-        #    return render.user.reportday(
-        #        web.ctx.session, listingVehicleClient(
-        #            web.ctx.session.clienteId))
-        return render.user.printreportday(
-            i.date, listVehicle(i.carid), allevent(i.carid, i.date))
+            return render.user.printreportday(
+                i.date, listVehicle(i.carid), allevent(i.carid, i.date))
+        except:
+            return render.user.reportday(
+                web.ctx.session, listingVehicleClient(
+                    web.ctx.session.clienteId))
 
 
 class reporthistoric:
