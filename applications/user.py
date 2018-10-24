@@ -13,6 +13,7 @@ urls = (
   "/reporthistoric", "reporthistoric",
   "/printreportday", "printreportday",
   # JSON
+  "/alleventjson", "alleventjson",
   "/reportdayjson", "reportdayjson",
   "/listeventjson", "listeventjson",
   "/listvehiclesjson", "listvehiclesjson",
@@ -80,34 +81,55 @@ class reporthistoric:
 class reportdayjson:
     @Sesion
     def GET(self):
+        """http://0.0.0.0:8080/user/reportdayjson?id=427&fecha=23-10-2018
         """
-            http://127.0.0.1:8080/user/reportdayjson?id=5&fecha=27-08-2012
-        """
-        import simplejson as json 
+        import simplejson as json
         from db import reportday
 
         i = web.input(id=None, fecha=None)
-        print "VEHICLE ID: ", i.id
-        print "FECHA: ", i.fecha
+        # print "VEHICLE ID: ", i.id
+        # print "FECHA: ", i.fecha
         web.header('content-Type', 'application/json')
+
         def dthandler(obj):
             obj.fecha = obj.fecha.strftime("%F %H:%M:%S")
             return obj
         return json.dumps([dthandler(row) for row in reportday(i.id, i.fecha)])
 
+
+class alleventjson:
+    @Sesion
+    def GET(self):
+        """http://0.0.0.0:8080/user/alleventjson?id=427&fecha=23-10-2018
+        """
+        import simplejson as json
+        from db import allevent
+
+        i = web.input(id=None, fecha=None)
+        #print "VEHICLE ID: ", i.id
+        #print "FECHA: ", i.fecha
+        web.header('content-Type', 'application/json')
+
+        def dthandler(obj):
+            obj.fecha = obj.fecha.strftime("%F %H:%M:%S")
+            return obj
+        return json.dumps([dthandler(row) for row in allevent(i.id, i.fecha)])
+
+
 class listeventjson:
     @Sesion
     def GET(self):
-        import simplejson as json 
+        import simplejson as json
         from db import countEventClient
         web.header('content-Type', 'application/json')
-        return json.dumps([row for row in countEventClient(web.ctx.session.clienteId)])
- 
+        return json.dumps([row for row in countEventClient(
+            web.ctx.session.clienteId)])
+
 
 class listvehiclesjson:
     @Sesion
     def GET(self):
-        import simplejson as json 
+        import simplejson as json
         from db import listingVehicleClient
         web.header('content-Type', 'application/json')
         #return json.dumps([row for row in listingVehicleClient(web.ctx.session.clienteId)])
