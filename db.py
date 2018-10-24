@@ -525,13 +525,31 @@ def reportday(vehiculo_id, fecha):
     """
     from web.db import sqlquote
     start_date = fecha + ' 00:00:00' 
-    end_date = fecha + ' 23:59:60' 
+    end_date = fecha + ' 23:59:59'
     return config.DB.query("""SELECT v.id, v.gps_id, v.placa, 
             p.velocidad, p.fecha, p.ubicacion, p.position
             FROM vehiculos v
             INNER JOIN positions_gps AS p ON (p.gps_id=v.gps_id)
             WHERE v.id=""" + sqlquote(vehiculo_id) + 
             """ and fecha between """ + sqlquote(start_date) + """ and """ + sqlquote(end_date))
+
+
+def allevent(vehiculo_id, fecha):
+    from web.db import sqlquote
+    start_datetime = fecha + ' 00:00:00'
+    end_datetime = fecha + ' 23:59:59'
+
+    return config.DB.query("""SELECT v.placa, p.velocidad as speed,
+        p.fecha, p.position, p.ubicacion, p.altura as alt,
+        p.grados as curse, e.id AS event_id, te.name
+        FROM vehiculos v
+        LEFT JOIN positions_gps AS p ON (p.gps_id=v.gps_id)
+        LEFT JOIN eventos AS e ON (e.positions_gps_id=p.id)
+        LEFT JOIN type_event AS te ON (te.codigo=e.type)
+        WHERE v.id=""" + sqlquote(vehiculo_id) + """ AND
+        p.fecha between """ + sqlquote(start_datetime) + """
+        AND """ + sqlquote(end_datetime) + """ ORDER BY p.fecha, e.id""")
+
 
 # Admin Charts
 
