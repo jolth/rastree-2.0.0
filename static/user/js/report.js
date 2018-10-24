@@ -251,18 +251,27 @@ get_events = {
                 //console.log(url);
                 //Eliminamos la tabla de reportes si existe:
                 $('#tbreport').remove();
-                var table = '<table id="tbreport" class="table table-hover table-condensed table-bordered"><thead><th>Fecha</th><th>Ubicación</th><th>Velocidad</th><head>'
+                var table = '<table id="tbreport" class="table table-hover table-condensed table-bordered"><thead><th>Fecha</th><th>Ubicación</th><th>Velocidad</th><th>Evento</th><head>'
                
                 // AJAX
                 jQuery.ajax({
-                    url      : '/user/reportdayjson',
+                    //url      : '/user/reportdayjson',
+                    url      : '/user/alleventjson',
                     data     : { 'id':vehi_id , 'fecha':fecha },
                     type     : 'GET',
                     dataType : 'json',
                     success  : function(json){
                         var newElement = [];
+                        var name;
                         jQuery.each(json, function(index, obj){
-                            newElement.push('<tr><td>'+obj.fecha+'</td><td class="ubica" data-content="'+obj.ubicacion+'" data-position="'+obj.position+'">'+obj.ubicacion+'</td><td>'+obj.velocidad+' km/h </td></tr>');
+                            name = obj.name;
+                            //if(name == null){
+                            if(!name){
+                              name = '';
+                            }/* else {
+                              console.log(name);
+                            }*/
+                            newElement.push('<tr><td>'+obj.fecha+'</td><td class="ubica" data-content="'+obj.ubicacion+'" data-position="'+obj.position+'">'+obj.ubicacion+'</td><td>'+obj.velocidad+' km/h </td><td>'+name+'</td></tr>');
                         });
                         console.log("Nuevo Elemento: "+newElement);
                         if (newElement == 0){

@@ -24,51 +24,70 @@ class reuser:
     def GET(self):
         raise web.seeother('/')
 
+
 class dashboard:
     @Sesion
     def GET(self):
         from db import listingVehicleClient
-        #return render.user.monitoreo(web.ctx.path, web.ctx.session) 
-        return render.user.dashboard(web.ctx.session,
-                listingVehicleClient(web.ctx.session.clienteId), datetime)
+        # return render.user.monitoreo(web.ctx.path, web.ctx.session)
+        return render.user.dashboard(
+            web.ctx.session, listingVehicleClient(
+                web.ctx.session.clienteId), datetime)
+
 
 class eventos:
     @Sesion
     def GET(self):
-        #web.ctx.session.logged_in = True
-        #raise web.seeother('/')
+        # web.ctx.session.logged_in = True
+        # raise web.seeother('/')
 
-        #return eventos
-        #return render.user.eventos(web.ctx.session)
-        #from db import listingVehicleClient
-        #return render.user.eventos(web.ctx.session, listingVehicleClient(web.ctx.session.clienteId))
+        # return eventos
+        # return render.user.eventos(web.ctx.session)
+        # from db import listingVehicleClient
+        # return render.user.eventos(
+        # web.ctx.session, listingVehicleClient(web.ctx.session.clienteId))
         from db import eventsClient
-        return render.user.eventos(web.ctx.session, eventsClient(web.ctx.session.clienteId))
+        return render.user.eventos(
+            web.ctx.session, eventsClient(web.ctx.session.clienteId))
+
 
 class search:
     @Sesion
     def GET(self):
         from db import listingVehicleClient
-        return render.user.search(web.ctx.session, listingVehicleClient(web.ctx.session.clienteId))
+        return render.user.search(
+            web.ctx.session, listingVehicleClient(web.ctx.session.clienteId))
+
 
 class reportday:
     @Sesion
     def GET(self):
         from db import listingVehicleClient
-        return render.user.reportday(web.ctx.session, listingVehicleClient(web.ctx.session.clienteId))
+        return render.user.reportday(
+            web.ctx.session, listingVehicleClient(web.ctx.session.clienteId))
+
 
 class printreportday:
     @Sesion
-    def GET(self): # Pasarlo a POST
-        """
-           http://127.0.0.1:8080/user/printreportday?carid=9&date=04-02-2013
+    def GET(self):  # Pasarlo a POST
+        """http://127.0.0.1:8080/user/printreportday?carid=9&date=04-02-2013
+        http://0.0.0.0:8080/user/printreportday?carid=427&date=23-10-2018
         """
         i = web.input(carid=None, date=None)
-        from db import reportday, listVehicle, listingVehicleClient
-        try:
-            return render.user.printreportday(i.date, listVehicle(i.carid), reportday(i.carid, i.date))
-        except:
-            return render.user.reportday(web.ctx.session, listingVehicleClient(web.ctx.session.clienteId))
+        #from db import reportday, listVehicle, listingVehicleClient
+        from db import allevent, listVehicle, listingVehicleClient
+        #try:
+            # return render.user.printreportday(
+            #    i.date, listVehicle(i.carid), reportday(i.carid, i.date))
+            #return render.user.printreportday(
+            #    i.date, listVehicle(i.carid), allevent(i.carid, i.date))
+        #except:
+        #    return render.user.reportday(
+        #        web.ctx.session, listingVehicleClient(
+        #            web.ctx.session.clienteId))
+        return render.user.printreportday(
+            i.date, listVehicle(i.carid), allevent(i.carid, i.date))
+
 
 class reporthistoric:
     @Sesion
@@ -76,7 +95,7 @@ class reporthistoric:
         return reporthistoric
 
 
-###### JSON
+# JSON
 
 class reportdayjson:
     @Sesion
@@ -100,14 +119,13 @@ class reportdayjson:
 class alleventjson:
     @Sesion
     def GET(self):
-        """http://0.0.0.0:8080/user/alleventjson?id=427&fecha=23-10-2018
-        """
+        """http://0.0.0.0:8080/user/alleventjson?id=427&fecha=23-10-2018"""
         import simplejson as json
         from db import allevent
 
         i = web.input(id=None, fecha=None)
-        #print "VEHICLE ID: ", i.id
-        #print "FECHA: ", i.fecha
+        # print "VEHICLE ID: ", i.id
+        # print "FECHA: ", i.fecha
         web.header('content-Type', 'application/json')
 
         def dthandler(obj):
@@ -132,13 +150,16 @@ class listvehiclesjson:
         import simplejson as json
         from db import listingVehicleClient
         web.header('content-Type', 'application/json')
-        #return json.dumps([row for row in listingVehicleClient(web.ctx.session.clienteId)])
+        # return json.dumps(
+        # [row for row in listingVehicleClient(web.ctx.session.clienteId)])
+
         def dthandler(obj):
             obj.fecha = obj.fecha.strftime("%F %H:%M:%S")
             return obj
-        #return json.dumps([dthandler(row) for row in views])
-        return json.dumps([dthandler(row) for row in listingVehicleClient(web.ctx.session.clienteId)])
+        # return json.dumps([dthandler(row) for row in views])
+        return json.dumps(
+            [dthandler(row) for row in listingVehicleClient(
+                web.ctx.session.clienteId)])
 
-        
 
 app_user = web.application(urls, locals())
