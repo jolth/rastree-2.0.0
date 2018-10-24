@@ -539,7 +539,7 @@ def allevent(vehiculo_id, fecha):
     start_datetime = fecha + ' 00:00:00'
     end_datetime = fecha + ' 23:59:59'
 
-    return config.DB.query("""SELECT v.placa, p.velocidad as speed,
+    return config.DB.query("""SELECT v.placa, p.velocidad,
         p.fecha, p.position, p.ubicacion, p.altura as alt,
         p.grados as curse, e.id AS event_id, te.name
         FROM vehiculos v
