@@ -1,97 +1,96 @@
 /* [ ---- Gebo Admin Panel - dashboard ---- ] */
-
 // valor del href del botón de impresión
 var href_btimp = document.getElementById('btimp').href;
 
 $(document).ready(function() {
 		//* table filter
-		table_filter.init();
+	table_filter.init();
         
-        //* resize map
-        var mapHeight = jQuery('#row1').height();
-        jQuery('#map_canvas').height(mapHeight-(mapHeight*11.50/100));
-        // google-chrome
-        jQuery(document).load(function(){
-            var mapHeight = jQuery(this).height();
-            jQuery('#map_canvas').height(mapHeight-(mapHeight*11.50/100));
-        });
-        //
-        jQuery(window).resize(function(){
-            var mapHeight = jQuery(this).height();
-            jQuery('#map_canvas').height(mapHeight-(mapHeight*11.50/100));
-        });
+  //* resize map
+  var mapHeight = jQuery('#row1').height();
+  jQuery('#map_canvas').height(mapHeight-(mapHeight*11.50/100));
+  // google-chrome
+  jQuery(document).load(function(){
+    var mapHeight = jQuery(this).height();
+    jQuery('#map_canvas').height(mapHeight-(mapHeight*11.50/100));
+  });
+  //
+  jQuery(window).resize(function(){
+    var mapHeight = jQuery(this).height();
+    jQuery('#map_canvas').height(mapHeight-(mapHeight*11.50/100));
+  });
 
-        //* popovers
-        //jQuery('.icon-info-sign').popover('toggle');
-        //jQuery('.icon-info-sign').popover('show');
-        //jQuery('.icon-info-sign').popover('hide');
-        jQuery('.icon-info-sign').hover(function (){ 
-                $(this).popover('show');
-        });
+  jQuery('.icon-info-sign').hover(function (){ 
+    $(this).popover('show');
+  });
 
-		//* resize elements on window resize
-		/*var lastWindowHeight = $(window).height();
-		var lastWindowWidth = $(window).width();
-		$(window).on("debouncedresize",function() {
-			if($(window).height()!=lastWindowHeight || $(window).width()!=lastWindowWidth){
-				lastWindowHeight = $(window).height();
-				lastWindowWidth = $(window).width();
-				//* rebuild calendar
-				//$('#calendar').fullCalendar('render');
-			}
-		});*/
+  //* start google map
+  //map_dashboard.init(5.06798, -75.51738, 4);
 
-        //* google map
-        //map_dashboard.init();
-        //map_dashboard.init(5.06798, -75.51738);
-        map_dashboard.init(5.06798, -75.51738, 4);
-
-        //* maps vehicles
-        //maps_vehicle.init();
-
-    //* datepicker
-    var tdate = new Date();
-    //var year  = tdate.getYear()+1900;
-    var year  = tdate.getFullYear();
-    var month = tdate.getMonth();
-    var today = tdate.getDate();
-    var hoy = new Date(year, month, today); 
-    $('#dp5').datepicker({
-            format: 'dd-mm-yyyy' 
-            //format: 'yyyy-mm-dd' 
-        })
-        //.attr('value', today+'-'+month+'-'+year)
-        //.attr('value', year+'-'+(month+1)+'-'+today)
-        .attr('value', today+'-'+(month+1)+'-'+year)
-        .on('changeDate', function(ev){
-                    console.log("Datepicker:"+ev.date.valueOf()+': '+ev.date);
-                    console.log("Hoy:"+hoy.valueOf()+': '+hoy);
-                    if(ev.date.valueOf() > hoy.valueOf()){
-                        $('#alert').show().find('strong').text('La fecha no puede ser mayor que la fecha de hoy.');
-                    } else {
-                        $('#alert').hide();
-                        var fecha = new Date(ev.date);
-                        var d=fecha.getDate(), m=fecha.getMonth(), y=fecha.getFullYear(); 
-                        console.log("Buscar fecha: "+fecha);
-                        console.log("Buscar fecha: "+ y+','+(m+1)+','+d);
-                        button_print.init(); // Pone la fecha que se cambia en el href del botón para imprimir
-                    }
-                });
+  /*Leaflet*/
+  leafletMap.init(5.06798, -75.51738, 2);
 
 
-        //**
-        get_events.init($('#submit'));
+  //* datepicker
+  var tdate = new Date();
+  //var year  = tdate.getYear()+1900;
+  var year  = tdate.getFullYear();
+  var month = tdate.getMonth();
+  var today = tdate.getDate();
+  var hoy = new Date(year, month, today); 
+  $('#dp5').datepicker({
+    format: 'dd-mm-yyyy' 
+    //format: 'yyyy-mm-dd' 
+  })
+  //.attr('value', today+'-'+month+'-'+year)
+  //.attr('value', year+'-'+(month+1)+'-'+today)
+    .attr('value', today+'-'+(month+1)+'-'+year)
+    .on('changeDate', function(ev){
+      console.log("Datepicker:"+ev.date.valueOf()+': '+ev.date);
+      console.log("Hoy:"+hoy.valueOf()+': '+hoy);
+      if(ev.date.valueOf() > hoy.valueOf()){
+        $('#alert').show().find('strong').text('La fecha no puede ser mayor que la fecha de hoy.');
+      } else {
+        $('#alert').hide();
+          var fecha = new Date(ev.date);
+          var d=fecha.getDate(), m=fecha.getMonth(), y=fecha.getFullYear(); 
+          console.log("Buscar fecha: "+fecha);
+          console.log("Buscar fecha: "+ y+','+(m+1)+','+d);
+          button_print.init(); // Pone la fecha que se cambia en el href del botón para imprimir
+      }
+    });
 
+  //**
+  get_events.init($('#submit'));
 });
 
-	//* table filter
-	//gebo_flist = {
-	table_filter = {
-		init: function(){
-			//*typeahead
-			var list_source = [];
-			//$('.table tr').each(function(){
-			$('table input:text').each(function(){
+
+/* Leaflet */
+var tile_layer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution: 'OSM'})
+var map;
+
+leafletMap = {
+  init: function(latitude, longitude, zoom) {
+    map = L.map('map_canvas', {
+      center: [latitude, longitude],
+      zoom: zoom,
+    });
+
+    tile_layer.addTo(map);
+  }
+};
+
+
+
+
+//* table filter
+//gebo_flist = {
+table_filter = {
+	init: function(){
+		//*typeahead
+		var list_source = [];
+		//$('.table tr').each(function(){
+		$('table input:text').each(function(){
 				//var search_name = $(this).find('.sl_name').text();
 				//var search_name = $(this).find('.sl_name').attr('value');
 				//var search_name = $(this).find('.sl_name').attr('value');
@@ -112,7 +111,7 @@ $(document).ready(function() {
                         //console.log('cambia fin: ' + vehiculo);
                         button_print.init(); // Pone la fecha que se cambia en el href del botón para imprimir
                     });
-		}
+	}
 
         //* formulario
         /*$("form").submit(function(){
@@ -122,20 +121,20 @@ $(document).ready(function() {
                 return false;
         });*/
 
-	};
+};
 
-    button_print = {
-        init: function() {
-            //var href = $('#btimp').attr('href');
-            var href = href_btimp;
-            console.log("href: " + href);
-            var fecha = $('.data-fecha').attr('value');
-            var id = $('.data').attr('data-id'); 
-            // ?carid=9&date=5-2-2013
-            href = href + '?carid=' + id +'&'+ 'date=' + fecha;  
-            $('#btimp').attr('href', href);
-        } 
-    };
+button_print = {
+  init: function() {
+    //var href = $('#btimp').attr('href');
+    var href = href_btimp;
+    console.log("href: " + href);
+    var fecha = $('.data-fecha').attr('value');
+    var id = $('.data').attr('data-id'); 
+    // ?carid=9&date=5-2-2013
+    href = href + '?carid=' + id +'&'+ 'date=' + fecha;  
+    $('#btimp').attr('href', href);
+  } 
+};
 
 //* google map 
 map_dashboard = {
