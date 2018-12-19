@@ -210,6 +210,15 @@ maps_vehicle = {
 var tile_layer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution: 'OSM'})
 var map;
 
+var rIcon = L.icon({
+  //iconUrl: 'icons24px.png',
+  //iconUrl: 'iconsnear24px.png',
+  iconUrl: '/static/user/img/iconsnearblue24px.png',
+  iconSize: [24, 24],
+  iconAnchor:[20, 6],
+  popupAnchor: [-4, -6]
+});
+
 mapLeafletDashboard = {
   init: function(latitude, longitude, zoom) {
     map = L.map('map_canvas', {
@@ -234,7 +243,7 @@ markerLeaflet = {
   },
   mark: function(latitude, longitude, zoom, address) {
     map.setView([latitude, longitude], zoom);
-    var marker = L.marker([latitude, longitude]).addTo(map);
+    var marker = L.marker([latitude, longitude], {icon: rIcon}).addTo(map);
     var coordinates = latitude + "," + longitude;
     marker.bindPopup("<a href='http://maps.google.com/maps?q=" + coordinates + "' target='_blank'>" + address + "</a>").openPopup();
     /*var popup = L.popup()
