@@ -229,30 +229,37 @@ maps_vehicle = {
     }
 };
 
+/***************************************************************************
+ * Create Multipolyline
+ ***************************************************************************/
 
-//* Obtiene los eventos del vehiculo con JSON
+function addMultiPolilyne(mplines) {
+  //console.log("is Array: " + Array.isArray(mplines));
+  //console.log("Location: " + mplines[0]);
+  if (mplines.length > 0) {
+    map.setView(mplines[0], 18);
+    let multipolylines = L.polyline(mplines, {color: 'green', weight: 3}).addTo(map);
+  }
+}
+
+/***************************************************************************
+ * AJAX connections
+ ***************************************************************************/
+
+// get all event in JSON since of the calendar
 get_events = {
-    init: function(elem){
+    init: function(elem) {
         
         $(elem).on('click', function(){
-                // fecha:
                 var fecha = $('.data-fecha').attr('value');
-                // id del vehiculo:
                 var vehi_id = $('.data').attr('data-id');
-                // vehiculo:
                 var vehi = $('.data').attr('value');
-                /**/
-                console.log("vehiculo: "+vehi);
-                console.log("id: "+vehi_id);
-                console.log("fecha: "+fecha);
-                
-                //var url = '/user/reportdayjson?id='+vehi_id+'&amp;fecha='+fecha 
-                //console.log(url);
-                //Eliminamos la tabla de reportes si existe:
-                $('#tbreport').remove();
                 var table = '<table id="tbreport" class="table table-hover table-condensed table-bordered"><thead><th>Fecha</th><th>Ubicación</th><th>Velocidad</th><th>Eventos</th><head>'
+                // polyline for the route
+                let multiPolylineRoute = [];
+                
+                $('#tbreport').remove(); //if the table 'tbreport' exists eliminate it
                
-                // AJAX
                 jQuery.ajax({
                     //url      : '/user/reportdayjson',
                     url      : '/user/alleventjson',
@@ -271,8 +278,14 @@ get_events = {
                               console.log(name);
                             }*/
                             newElement.push('<tr><td>'+obj.fecha+'</td><td class="ubica" data-content="'+obj.ubicacion+'" data-position="'+obj.position+'">'+obj.ubicacion+'</td><td>'+obj.velocidad+' km/h </td><td>'+name+'</td></tr>');
+                            
+                            if(obj.velocidad > 0) {
+                              multiPolylineRoute.push(obj.position.slice(1, -1).split(','));
+                            }
                         });
-                        console.log("Nuevo Elemento: "+newElement);
+                        //console.log(`ROUTE: ${multiPolylineRoute}`);
+                        //console.log("Nuevo Elemento: "+newElement);
+
                         if (newElement == 0){
                             $('#alert').show().find('strong').text('No exiten reportes para este día.');
                             return null;
@@ -287,9 +300,10 @@ get_events = {
                         console.log(jqXHR);
                         //* maps vehicles
                         maps_vehicle.init();
+                        addMultiPolilyne(multiPolylineRoute);
                     }
                 }); 
 
         });
     }
-}
+};
