@@ -231,8 +231,17 @@ maps_vehicle = {
 };
 
 
-
-
+/***************************************************************************
+ * Icons 
+ ***************************************************************************/
+var iIgnOn = L.icon({
+  //iconUrl: 'icons24px.png',
+  //iconUrl: 'iconsnear24px.png',
+  iconUrl: '/static/user/img/on18.png',
+  iconSize: [18, 18],
+  iconAnchor:[5, 10],
+  popupAnchor: [4, -10]
+});
 
 var rIcon = L.icon({
   //iconUrl: 'icons24px.png',
@@ -272,7 +281,7 @@ function addMakerPoints(eventList) {
   for(let item of eventList) {
     console.log(`EVENTO: ${item.name}`);
     if (item.name === 'Ignicion ON') { 
-      L.marker(item.position.slice(1, -1).split(',')).addTo(map)
+      L.marker(item.position.slice(1, -1).split(','), {icon: iIgnOn}).addTo(map)
         .bindPopup(`${item.name}<br>${item.fecha}`, {closeOnClick: false, autoClose: false})
         .openPopup();
     }
