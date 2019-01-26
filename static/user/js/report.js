@@ -46,16 +46,16 @@ $(document).ready(function() {
   //.attr('value', year+'-'+(month+1)+'-'+today)
     .attr('value', today+'-'+(month+1)+'-'+year)
     .on('changeDate', function(ev){
-      console.log("Datepicker:"+ev.date.valueOf()+': '+ev.date);
-      console.log("Hoy:"+hoy.valueOf()+': '+hoy);
+      //console.log("Datepicker:"+ev.date.valueOf()+': '+ev.date);
+      //console.log("Hoy:"+hoy.valueOf()+': '+hoy);
       if(ev.date.valueOf() > hoy.valueOf()){
         $('#alert').show().find('strong').text('La fecha no puede ser mayor que la fecha de hoy.');
       } else {
         $('#alert').hide();
           var fecha = new Date(ev.date);
           var d=fecha.getDate(), m=fecha.getMonth(), y=fecha.getFullYear(); 
-          console.log("Buscar fecha: "+fecha);
-          console.log("Buscar fecha: "+ y+','+(m+1)+','+d);
+          //console.log("Buscar fecha: "+fecha);
+          //console.log("Buscar fecha: "+ y+','+(m+1)+','+d);
           button_print.init(); // Pone la fecha que se cambia en el href del botón para imprimir
       }
     });
@@ -95,7 +95,7 @@ table_filter = {
 				//var search_name = $(this).find('.sl_name').attr('value');
 				//var search_name = $(this).find('.sl_name').attr('value');
 				var search_name = $(this).attr('value');
-                console.log('search_name: ' + search_name);
+        //console.log('search_name: ' + search_name);
 				//var search_email = $(this).find('.sl_email').text();
 				list_source.push(search_name);
 			});
@@ -127,7 +127,7 @@ button_print = {
   init: function() {
     //var href = $('#btimp').attr('href');
     var href = href_btimp;
-    console.log("href: " + href);
+    //console.log("href: " + href);
     var fecha = $('.data-fecha').attr('value');
     var id = $('.data').attr('data-id'); 
     // ?carid=9&date=5-2-2013
@@ -210,7 +210,8 @@ maps_vehicle = {
         $('.ubica').on(
             'click',
             function(){
-                //console.log('clic: ' + this);
+                console.log('clic: ' + this);
+                console.log("CLICK");
                 //console.log('position: ' + $(this).attr('data-position'));
                 //map_vehicle.init($(this).attr('data-position'), 19);
                 var position = $(this).attr('data-position').split(",");
@@ -229,35 +230,59 @@ maps_vehicle = {
     }
 };
 
+
+/***************************************************************************
+ * View Point 
+ ***************************************************************************/
+viewPoint = {
+  init() {
+    $('.ubica').on('click', function() {
+      let position = $(this).attr('data-position').slice(1, -1).split(','); 
+      let address = $(this).attr('data-content'); 
+      let dEvent = $(this).attr('data-event');
+      //let circle = L.circle(position, 3, {weight: 1, color: 'blue', fillColor: 'blue'}).addTo(map); 
+      //let circle = L.circle(position, 2, {weight: 1, color: 'blue'}).addTo(map); 
+      map.setView(position, 18);
+      //test:
+      //console.log(`EVENT: ${dEvent}`);
+    });
+  }
+};
+/***************************************************************************
+ * Add Marker Point
+ ***************************************************************************/
+viewPoints = {
+};
 /***************************************************************************
  * Create Multipolyline
  ***************************************************************************/
 
+let multipolylines;
+
 function addMultiPolilyne(mplines) {
-  //console.log("is Array: " + Array.isArray(mplines));
-  //console.log("Location: " + mplines[0]);
   if (mplines.length > 0) {
-    map.setView(mplines[0], 18);
-    let multipolylines = L.polyline(mplines, {color: 'green', weight: 3}).addTo(map);
+    map.setView(mplines[0], 14);
+    multipolylines = L.polyline(mplines, {color: 'green', weight: 3}).addTo(map);
   }
 }
 
 /***************************************************************************
  * AJAX connections
  ***************************************************************************/
-
 // get all event in JSON since of the calendar
 get_events = {
     init: function(elem) {
-        
         $(elem).on('click', function(){
                 var fecha = $('.data-fecha').attr('value');
                 var vehi_id = $('.data').attr('data-id');
                 var vehi = $('.data').attr('value');
                 var table = '<table id="tbreport" class="table table-hover table-condensed table-bordered"><thead><th>Fecha</th><th>Ubicación</th><th>Velocidad</th><th>Eventos</th><head>'
-                // polyline for the route
                 let multiPolylineRoute = [];
+                let makerEvents = [];
                 
+                if (multipolylines) {
+                  multipolylines.remove();
+                }
                 $('#tbreport').remove(); //if the table 'tbreport' exists eliminate it
                
                 jQuery.ajax({
@@ -267,17 +292,19 @@ get_events = {
                     type     : 'GET',
                     dataType : 'json',
                     success  : function(json){
+
+                        console.log(json);
+
                         var newElement = [];
                         var name;
                         jQuery.each(json, function(index, obj){
                             name = obj.name;
-                            //if(name == null){
                             if(!name){
                               name = '';
-                            }/* else {
-                              console.log(name);
-                            }*/
-                            newElement.push('<tr><td>'+obj.fecha+'</td><td class="ubica" data-content="'+obj.ubicacion+'" data-position="'+obj.position+'">'+obj.ubicacion+'</td><td>'+obj.velocidad+' km/h </td><td>'+name+'</td></tr>');
+                            } else {
+                              makerEvents.push(obj);
+                            }
+                            newElement.push('<tr><td>'+obj.fecha+'</td><td class="ubica" data-content="'+obj.ubicacion+'" data-position="'+obj.position+'" data-event="'+name+'">'+obj.ubicacion+'</td><td>'+obj.velocidad+' km/h </td><td>'+name+'</td></tr>');
                             
                             if(obj.velocidad > 0) {
                               multiPolylineRoute.push(obj.position.slice(1, -1).split(','));
@@ -285,6 +312,7 @@ get_events = {
                         });
                         //console.log(`ROUTE: ${multiPolylineRoute}`);
                         //console.log("Nuevo Elemento: "+newElement);
+                        console.log(makerEvents);
 
                         if (newElement == 0){
                             $('#alert').show().find('strong').text('No exiten reportes para este día.');
@@ -296,10 +324,11 @@ get_events = {
                         console.log("Se produjo un error: " + error);
                     },
                     complete : function(jqXHR, status){
-                        console.log("Petición terminada con estado: " + status);
-                        console.log(jqXHR);
+                        //console.log("Petición terminada con estado: " + status);
+                        //console.log(jqXHR);
                         //* maps vehicles
-                        maps_vehicle.init();
+                        //maps_vehicle.init();
+                        viewPoint.init();
                         addMultiPolilyne(multiPolylineRoute);
                     }
                 }); 
