@@ -231,6 +231,23 @@ maps_vehicle = {
 };
 
 
+
+
+
+var rIcon = L.icon({
+  //iconUrl: 'icons24px.png',
+  //iconUrl: 'iconsnear24px.png',
+  iconUrl: '/static/user/img/iconsnearblue24px.png',
+  iconSize: [24, 24],
+  iconAnchor:[20, 6],
+  popupAnchor: [-4, -6]
+});
+
+function addLastPoint(position) {
+  L.marker(position, {icon: rIcon}).addTo(map);
+}
+
+
 /***************************************************************************
  * View Point 
  ***************************************************************************/
@@ -249,14 +266,21 @@ viewPoint = {
   }
 };
 /***************************************************************************
- * Add Marker Point
+ * Add layer of marker points
  ***************************************************************************/
-viewPoints = {
-};
+function addMakerPoints(eventList) {
+  for(let item of eventList) {
+    console.log(`EVENTO: ${item.name}`);
+    if (item.name === 'Ignicion ON') { 
+      L.marker(item.position.slice(1, -1).split(',')).addTo(map)
+        .bindPopup(`${item.name}<br>${item.fecha}`, {closeOnClick: false, autoClose: false})
+        .openPopup();
+    }
+  } 
+}
 /***************************************************************************
- * Create Multipolyline
+ * Create a Multipolyline for draw routes
  ***************************************************************************/
-
 let multipolylines;
 
 function addMultiPolilyne(mplines) {
@@ -265,7 +289,6 @@ function addMultiPolilyne(mplines) {
     multipolylines = L.polyline(mplines, {color: 'green', weight: 3}).addTo(map);
   }
 }
-
 /***************************************************************************
  * AJAX connections
  ***************************************************************************/
@@ -278,7 +301,8 @@ get_events = {
                 var vehi = $('.data').attr('value');
                 var table = '<table id="tbreport" class="table table-hover table-condensed table-bordered"><thead><th>Fecha</th><th>Ubicación</th><th>Velocidad</th><th>Eventos</th><head>'
                 let multiPolylineRoute = [];
-                let makerEvents = [];
+                let eventList = [];
+                let lastPosition;
                 
                 if (multipolylines) {
                   multipolylines.remove();
@@ -294,25 +318,30 @@ get_events = {
                     success  : function(json){
 
                         console.log(json);
-
+                        lastPosition = json.length - 1; 
                         var newElement = [];
                         var name;
+
                         jQuery.each(json, function(index, obj){
                             name = obj.name;
                             if(!name){
                               name = '';
                             } else {
-                              makerEvents.push(obj);
+                              eventList.push(obj);
                             }
                             newElement.push('<tr><td>'+obj.fecha+'</td><td class="ubica" data-content="'+obj.ubicacion+'" data-position="'+obj.position+'" data-event="'+name+'">'+obj.ubicacion+'</td><td>'+obj.velocidad+' km/h </td><td>'+name+'</td></tr>');
                             
                             if(obj.velocidad > 0) {
                               multiPolylineRoute.push(obj.position.slice(1, -1).split(','));
                             }
+                            
+                            if (index == lastPosition) {
+                              lastPosition = obj.position.slice(1, -1).split(',');
+                            }
                         });
                         //console.log(`ROUTE: ${multiPolylineRoute}`);
                         //console.log("Nuevo Elemento: "+newElement);
-                        console.log(makerEvents);
+                        console.log(eventList);
 
                         if (newElement == 0){
                             $('#alert').show().find('strong').text('No exiten reportes para este día.');
@@ -328,8 +357,10 @@ get_events = {
                         //console.log(jqXHR);
                         //* maps vehicles
                         //maps_vehicle.init();
+                        addLastPoint(lastPosition);
                         viewPoint.init();
                         addMultiPolilyne(multiPolylineRoute);
+                        addMakerPoints(eventList);
                     }
                 }); 
 
