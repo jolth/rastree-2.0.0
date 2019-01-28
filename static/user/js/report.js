@@ -1,4 +1,8 @@
-/* [ ---- Gebo Admin Panel - dashboard ---- ] */
+/***************************************************************************
+ * Copyright 2012 Dev Microsystem S.A.S. All rights reserved.
+ * Use of this source code is governed by a BSD-style
+ * license that can be found in the LICENSE file.
+ ***************************************************************************/
 // valor del href del botón de impresión
 var href_btimp = document.getElementById('btimp').href;
 
@@ -269,7 +273,6 @@ var ibatteryOff = L.icon({
   popupAnchor: [4, -10]
 });
 
-
 var rIcon = L.icon({
   //iconUrl: 'icons24px.png',
   //iconUrl: 'iconsnear24px.png',
@@ -279,11 +282,12 @@ var rIcon = L.icon({
   popupAnchor: [-4, -6]
 });
 
+/***************************************************************************
+ * Add Last position of the vehicle 
+ ***************************************************************************/
 function addLastPoint(position) {
-  L.marker(position, {icon: rIcon}).addTo(map);
+  if (Array.isArray(position)) L.marker(position, {icon: rIcon}).addTo(map);
 }
-
-
 /***************************************************************************
  * View Point 
  ***************************************************************************/
