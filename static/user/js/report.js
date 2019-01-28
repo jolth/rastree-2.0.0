@@ -235,13 +235,40 @@ maps_vehicle = {
  * Icons 
  ***************************************************************************/
 var iIgnOn = L.icon({
-  //iconUrl: 'icons24px.png',
-  //iconUrl: 'iconsnear24px.png',
   iconUrl: '/static/user/img/on18.png',
   iconSize: [18, 18],
   iconAnchor:[5, 10],
   popupAnchor: [4, -10]
 });
+
+var iIgnOff = L.icon({
+  iconUrl: '/static/user/img/off18.png',
+  iconSize: [18, 18],
+  iconAnchor:[5, 10],
+  popupAnchor: [4, -10]
+});
+
+var iSpeed = L.icon({
+  iconUrl: '/static/user/img/speed18.png',
+  iconSize: [18, 18],
+  iconAnchor:[5, 10],
+  popupAnchor: [4, -10]
+});
+
+var ibatteryOn = L.icon({
+  iconUrl: '/static/user/img/chargingbattery18.png',
+  iconSize: [18, 18],
+  iconAnchor:[8, 13],
+  popupAnchor: [4, -10]
+});
+
+var ibatteryOff = L.icon({
+  iconUrl: '/static/user/img/nobattery18.png',
+  iconSize: [18, 18],
+  iconAnchor:[8, 13],
+  popupAnchor: [4, -10]
+});
+
 
 var rIcon = L.icon({
   //iconUrl: 'icons24px.png',
@@ -280,10 +307,32 @@ viewPoint = {
 function addMakerPoints(eventList) {
   for(let item of eventList) {
     console.log(`EVENTO: ${item.name}`);
-    if (item.name === 'Ignicion ON') { 
-      L.marker(item.position.slice(1, -1).split(','), {icon: iIgnOn}).addTo(map)
-        .bindPopup(`${item.name}<br>${item.fecha}`, {closeOnClick: false, autoClose: false})
-        .openPopup();
+    switch(item.name) { 
+      case 'Ignicion ON': 
+        L.marker(item.position.slice(1, -1).split(','), {icon: iIgnOn}).addTo(map)
+          .bindPopup(`${item.name}<br>${item.fecha}`, {closeOnClick: false, autoClose: false})
+          .openPopup();
+        break;
+      case "Ignicion OFF":
+        L.marker(item.position.slice(1, -1).split(','), {icon: iIgnOff}).addTo(map)
+          .bindPopup(`${item.name}<br>${item.fecha}`, {closeOnClick: false, autoClose: false})
+          .openPopup();
+        break;
+      case "Velocidad":
+        L.marker(item.position.slice(1, -1).split(','), {icon: iSpeed}).addTo(map)
+          .bindPopup(`${item.velocidad} km/h <br>${item.fecha}`, {closeOnClick: false, autoClose: false})
+          .openPopup();
+        break;
+      case "Bateria OFF":
+        L.marker(item.position.slice(1, -1).split(','), {icon: ibatteryOff}).addTo(map)
+          .bindPopup(`${item.name}<br>${item.fecha}`, {closeOnClick: false, autoClose: false})
+          .openPopup();
+        break;
+      case "Bateria ON":
+        L.marker(item.position.slice(1, -1).split(','), {icon: ibatteryOn}).addTo(map)
+          .bindPopup(`${item.name}<br>${item.fecha}`, {closeOnClick: false, autoClose: false})
+          .openPopup();
+        break;
     }
   } 
 }
