@@ -343,11 +343,22 @@ function addMakerPoints(eventList) {
 /***************************************************************************
  * Create a Multipolyline for draw routes
  ***************************************************************************/
+/*
 let multipolylines;
 
 function addMultiPolilyne(mplines) {
   if (mplines.length > 0) {
-    map.setView(mplines[0], 14);
+    map.setView(mplines[0], 12);
+    multipolylines = L.polyline(mplines, {color: 'green', weight: 3}).addTo(map);
+  }
+}
+*/
+
+let multipolylines;
+
+function addMultiPolilyne(mplines) {
+  if (mplines.length > 0) {
+    map.setView(mplines[0], 12);
     multipolylines = L.polyline(mplines, {color: 'green', weight: 3}).addTo(map);
   }
 }
@@ -362,7 +373,7 @@ get_events = {
                 var vehi_id = $('.data').attr('data-id');
                 var vehi = $('.data').attr('value');
                 var table = '<table id="tbreport" class="table table-hover table-condensed table-bordered"><thead><th>Fecha</th><th>Ubicación</th><th>Velocidad</th><th>Eventos</th><head>'
-                let multiPolylineRoute = [];
+                let multiPolylineRoute = new Array();
                 let eventList = [];
                 let lastPosition;
                 
@@ -379,7 +390,7 @@ get_events = {
                     dataType : 'json',
                     success  : function(json){
 
-                        console.log(json);
+                        //console.log(json);
                         lastPosition = json.length - 1; 
                         var newElement = [];
                         var name;
@@ -392,18 +403,44 @@ get_events = {
                               eventList.push(obj);
                             }
                             newElement.push('<tr><td>'+obj.fecha+'</td><td class="ubica" data-content="'+obj.ubicacion+'" data-position="'+obj.position+'" data-event="'+name+'">'+obj.ubicacion+'</td><td>'+obj.velocidad+' km/h </td><td>'+name+'</td></tr>');
-                            
+                            /*
                             if(obj.velocidad > 0) {
                               multiPolylineRoute.push(obj.position.slice(1, -1).split(','));
                             }
-                            
+                            */
                             if (index == lastPosition) {
                               lastPosition = obj.position.slice(1, -1).split(',');
                             }
                         });
-                        //console.log(`ROUTE: ${multiPolylineRoute}`);
+
+                        // Create multiPolylineRoute
+                        let start_trip = end_trip = sentinel = 0;
+                        let routes = new Array(); 
+                        json.forEach((item, index, array) => {
+                            if (item.velocidad > 0) {
+                              routes.push(index);
+                              sentinel = 1;
+                            } else if (sentinel > 0) {
+                              multiPolylineRoute.push([routes]);
+                              routes = [];
+                              sentinel = 0;
+                            }
+                        });
+
+                        console.log(json);
+                        console.log(multiPolylineRoute);
                         //console.log("Nuevo Elemento: "+newElement);
-                        console.log(eventList);
+                        //console.log(eventList);
+
+                        // routes 
+                        /*
+                        let routes = new Array();
+                        for (let col=0; col < lastPosition; col++) {
+                          for (let i=0;;i++) {
+                            if (json)
+                          }
+                        }
+                        */
 
                         if (newElement == 0){
                             $('#alert').show().find('strong').text('No exiten reportes para este día.');
