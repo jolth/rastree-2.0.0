@@ -216,7 +216,8 @@ var rIcon = L.icon({
   iconUrl: '/static/user/img/iconsnearblue24px.png',
   iconSize: [24, 24],
   iconAnchor:[20, 6],
-  popupAnchor: [-4, -6]
+  popupAnchor: [-4, -6],
+  className: 'blinking'
 });
 
 mapLeafletDashboard = {
@@ -246,6 +247,7 @@ markerLeaflet = {
     var marker = L.marker([latitude, longitude], {icon: rIcon}).addTo(map);
     var coordinates = latitude + "," + longitude;
     marker.bindPopup("<a href='http://maps.google.com/maps?q=" + coordinates + "' target='_blank'>" + address + "</a>").openPopup();
+    L.DomUtil.addClass(marker._icon, "blinking");
     /*var popup = L.popup()
     .setLatLng([latitude, longitude])
     .setContent(address)
