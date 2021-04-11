@@ -50,9 +50,11 @@ $code:
         $if v.gps_active:
             $ sts = status(v.fecha)
             $ alert = (sts != 'online') and 'alert-danger' or 'alert-success'
+            $ gps_id = v.aka or v.name
             <tr class="caption $alert" data-position='$v.position' data-location='$v.ubicacion'>
              <td>$boolconver(v.active, 'active', 'deactivated')</td>
-             <td>$v.name</td>
+             <td>$gps_id</td>
+             <!--<td>$v.name</td>-->
              <td class="uppercase">$v.placa</td>
              <td class="uppercase">$boolconver(v.motor, 'on', 'off')</td>
              <td>$v.velocidad km/h</td>
