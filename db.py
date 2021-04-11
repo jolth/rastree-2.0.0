@@ -363,7 +363,7 @@ def generalView():
 
 def show_avl():
     """view all the avl functionals"""
-    return config.DB.query("""SELECT l.position, v.placa, g.name, 
+    return config.DB.query("""SELECT l.position, v.placa, g.name, g.aka 
                     g.active as gps_active, l.fecha, l.velocidad, l.altura, 
                     l.satelites, l.ubicacion, vs.motor, v.active FROM 
                     vehiculos v, last_positions_gps l, gps g, vehicle_state vs
