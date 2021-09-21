@@ -368,7 +368,7 @@ def show_avl():
                     l.satelites, l.ubicacion, vs.motor, v.active FROM 
                     vehiculos v, last_positions_gps l, gps g, vehicle_state vs
                     WHERE v.gps_id=g.id AND g.id=l.gps_id AND 
-                    vs.vehicle_id=v.id;""")
+                    vs.vehicle_id=v.id ORDER BY fecha DESC;""")
 
 def countEvent():
     """
