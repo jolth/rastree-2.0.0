@@ -14,19 +14,18 @@ import datetime
 urls = (
     "", "reuser",
     "/", "dashboard",
-    "/overview", "overview"
+    "/overview", "overview",
+    "/reports", "reports"
 )
 
 class reuser:
     def GET(self):
         raise web.seeother('/')
 
-
 class dashboard:
     @Sesion
     def GET(self):
         return render.base(render.dashboard(), "Dashboard")
-
 
 class overview:
     @Sesion
@@ -36,5 +35,9 @@ class overview:
         vehicles = db.show_avl()
         return render.base(render.overview(vehicles, datetime), "Overview")
 
+class reports:
+    @Sesion
+    def GET(self):
+        return "Hello World"
 
 app_controlmonitoring = web.application(urls, locals())
