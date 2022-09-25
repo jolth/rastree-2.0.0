@@ -33,6 +33,7 @@ class dashboard:
 class overview:
     @Sesion
     def GET(self):
+        from db import listingAllVehicle
         #vehicles = db.generalView()
         #return render.base(render.overview(vehicles, datetime), "Overview")
         vehicles = db.show_avl()
