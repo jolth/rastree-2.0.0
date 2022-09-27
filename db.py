@@ -662,3 +662,46 @@ def check_vehicle(plate=None):
     return config.DB.query("""select exists (select 1 from vehiculos where
                            placa=lower('%s'))""" % plate)
 
+def vehicle_reports(plate, started=None, endend=None):
+    """get history of the reports for vehícle.
+
+    >>> from db import vehicle_reports
+    >>>
+    >>> f = vehicle_reports('TK303')
+    0.51 (1): SELECT p.id, v.placa, p.velocidad, p.fecha, p.position,
+        p.ubicacion, p.altura, p.grados, e.id AS event_id, te.name
+        FROM vehiculos v
+        LEFT JOIN positions_gps AS p ON (p.gps_id=v.gps_id)
+        LEFT JOIN eventos AS e ON (e.positions_gps_id=p.id)
+        LEFT JOIN type_event AS te ON (te.codigo=e.type)
+        WHERE v.placa=lower('TK303') AND p.fecha between '2022-09-27'
+            and '2022-09-27 23:59:59' ORDER BY p.fecha, e.id
+    >>>
+    >>> for r in f:
+    ...     print(r)
+
+    """
+    import datetime
+
+    today = datetime.date.today()
+    query = """SELECT p.id, v.placa, p.velocidad, p.fecha, p.position,
+    p.ubicacion, p.altura, p.grados, e.id AS event_id, te.name
+    FROM vehiculos v
+    LEFT JOIN positions_gps AS p ON (p.gps_id=v.gps_id)
+    LEFT JOIN eventos AS e ON (e.positions_gps_id=p.id)
+    LEFT JOIN type_event AS te ON (te.codigo=e.type)
+    WHERE v.placa=lower('{plate}')""".format(plate=plate)
+
+    started = today.strftime("%Y-%m-%d") if started is None else started
+    endend = today.strftime("%Y-%m-%d 23:59:59") if endend is None\
+            else "{} 23:59:59".format(endend)
+
+    try:
+        query="""{query} AND p.fecha between '{started}'
+        and '{endend}' ORDER BY p.fecha, e.id""".format(
+                                                    query=query,
+                                                    started=started,
+                                                    endend=endend)
+        return config.DB.query(query)
+    except EOFError as e:
+        raise e
