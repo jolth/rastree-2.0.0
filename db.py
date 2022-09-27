@@ -644,23 +644,19 @@ def listVehicle(idVehicle):
 ###############  controlmonitoring
 
 
-def check_vehicle(plate=None):
+def check_plate(plate=None):
     """Check if vehicle exists.
 
-    >>> from db import check_vehicle
-    >>> v = check_vehicle('RJM270')
+    >>> from db import check_plate
+    >>> check_plate('TK303')
     0.01 (1): select exists (select 1 from vehiculos where
-                           placa=lower('RJM270'))
-    >>> v
-    <web.utils.IterBetter instance at 0x7fa28368e1b8>
-    >>> for i in v:
-    ...     print i
-    ...
-    <Storage {'exists': True}>
+                            placa=lower('TK303'))
+    True
     """
     from web.db import sqlquote
-    return config.DB.query("""select exists (select 1 from vehiculos where
+    res = config.DB.query("""select exists (select 1 from vehiculos where
                            placa=lower('%s'))""" % plate)
+    return res[0]["exists"]
 
 def vehicle_reports(plate, started=None, endend=None):
     """get history of the reports for vehícle.
