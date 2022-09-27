@@ -653,7 +653,6 @@ def check_plate(plate=None):
                             placa=lower('TK303'))
     True
     """
-    from web.db import sqlquote
     res = config.DB.query("""select exists (select 1 from vehiculos where
                            placa=lower('%s'))""" % plate)
     return res[0]["exists"]
