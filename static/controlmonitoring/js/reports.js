@@ -38,7 +38,6 @@ document.addEventListener("DOMContentLoaded", () => {
           console.log("Error: ", e);
         }
 
-        //console.log(res.plate);
         applyStyle(elementPlate, res.plate);
     });
 });
