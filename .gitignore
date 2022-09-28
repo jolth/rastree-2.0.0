@@ -1,0 +1,6 @@
+*bk[1-9]
+*.bk
+*pyc
+*.aux
+sesiones/
+*.[^a-z]
