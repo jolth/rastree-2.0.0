@@ -15,7 +15,8 @@ urls = (
     "", "reuser",
     "/", "dashboard",
     "/overview", "overview",
-    "/reports", "reports"
+    "/reports", "reports",
+    "/check_plate", "check_plate"
 )
 
 
@@ -44,6 +45,22 @@ class reports:
     @Sesion
     def GET(self):
         return render.base(render.reports(), "Reports")
+
+
+class check_plate:
+    @Sesion
+    def GET(self):
+        "http://localhost:8080/controlmonitoring/check_plate?plate=${plate}"
+        from db import check_plate as chp
+        import simplejson as json
+
+        ipt = web.input(plate=None)
+        web.header('content-Type', 'application/json')
+
+        res = chp(ipt.plate)
+        print(res)
+
+        return json.dumps({'plate': res})
 
 
 app_controlmonitoring = web.application(urls, locals())

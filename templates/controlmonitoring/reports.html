@@ -2,22 +2,22 @@ $def with ()
 
 	<div class="container">
 		<p class="lead">Generar Reporte</p>
-			<form id="from">
+			<form id="from" action="javascript:void 0">
 				<ul class="wrapper">
 					<li>
-						<label for="plate">Placa</label>
-						<input type="text" name="plate" class="form-control">
+						<label for="plate">Plate</label>
+						<input id="plate" type="text" name="plate" placeholder="ingresar la placa" class="form-control">
 					</li>
 					<li>
-						<label for="started">Fecha Inicial</label>
+						<label for="started">Start datetime</label>
 						<input type="date" name="started" class="form-control">
 					</li>
 					<li>
-						<label for="ending">Fecha Final</label>
+						<label for="ending">End datatime</label>
 						<input type="date" name="ending" class="form-control">
 					</li>
 					<li>
-						<button id="search" type="submit" class="btn btn-success">Generar</button>
+						<input id="search" type="button" class="btn btn-success" value="Generar">
 					</li>
 				</ul>
 			</form>
@@ -25,13 +25,13 @@ $def with ()
 			<table id="table" class="table">
 				<thead class="thead-inverse">
 					<tr>
-						<th>Placa</th>
-						<th>Fecha / Hora</th>
-						<th>Ubicación</th> <!-- attach map link and adders -->
-						<th>Curso</th>
-						<th>Altitud</th>
-						<th>Velocidad</th>
-						<th>Evento</th>
+						<th>Plate</th>
+						<th>Date / Time</th>
+						<th>Stree</th> <!-- attach map link and adders -->
+						<th>Altitude</th>
+						<th>Azimuth</th>
+						<th>Speed</th>
+						<th>Event</th>
 					</tr>
 				</thead>
 			</table>
@@ -46,6 +46,6 @@ $def with ()
   <!-- Include all compiled plugins (below), or include individual files as needed -->
   <script src="/static/controlmonitoring/bootstrap-3.2.0-dist/js/bootstrap.min.js"></script>
 
+	<script src="/static/controlmonitoring/js/reports.js"></script>
   <script src="/static/controlmonitoring/js/plugins.js"></script>
   <script src="/static/controlmonitoring/js/main.js"></script>
-	<script src="/static/controlmonitoring/js/reports.js"></script>

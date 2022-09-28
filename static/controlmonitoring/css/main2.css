@@ -1,3 +1,14 @@
+:root {
+    --clr-success: #7dcea0;
+    --clr-success-bg: #d4efdf; 
+    --clr-error: #d98880;
+    --clr-error-bg: #fadbdb;
+    --clr-text: #2e4053;
+}
+
+body {
+    color: var(--clr-text);
+}
 
 .container {
     display: grid;
@@ -21,7 +32,11 @@
     max-width: 220px;
 }
 
-.wrapper li button {
+.wrapper li {
+    margin: 1rem;
+}
+
+input[type="button"] {
     padding: 6px 12px;
     border: none;
     background: #2980B9;
@@ -30,9 +45,30 @@
     letter-spacing: .05em;
 }
 
-button::before,
-button::after {
-    content: '';
+input.success-input {
+    color: var(--clr-success);
+    background-color: var(--clr-success-bg);
+    border-color: var(--clr-success);
+}
+
+input.error-input {
+    color: var(--clr-error);
+    background-color: var(--clr-error-bg);
+    border-color: var(--clr-error);
+}
+
+.btn {
+    margin: 5px;
+}
+
+.error::after {
+    content: 'Error: data is not correct';
     display: block;
-    background-color: red;
+    color: var(--clr-error);
+    background-color: var(--clr-error-bg);
+    border-radius: 2px;
+    border: 1px solid var(--clr-error);
+    font-size: 1rem;
+    margin: 2px;
+    padding: 2px;
 }
