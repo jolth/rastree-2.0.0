@@ -16,7 +16,8 @@ urls = (
     "/", "dashboard",
     "/overview", "overview",
     "/reports", "reports",
-    "/check_plate", "check_plate"
+    "/check_plate", "check_plate",
+    "/reports_json", "reports_json"
 )
 
 
@@ -56,11 +57,35 @@ class check_plate:
 
         ipt = web.input(plate=None)
         web.header('content-Type', 'application/json')
-
         res = chp(ipt.plate)
-        print(res)
 
         return json.dumps({'plate': res})
+
+
+class reports_json:
+    @Sesion
+    def GET(self):
+        """http://localhost/controlmonitoring/reports_json?plate=tk303
+        http://localhost/controlmonitoring/reports_json?plate=tk303&started=2022-09-27
+        """
+        import simplejson as json
+        from db import vehicle_reports
+
+        ipt = web.input(plate=None, started=None, endend=None)
+        web.header('content-type', 'application/json')
+
+        print(ipt.plate, ipt.started, ipt.endend) # testing
+        assert ipt.endend is not None
+        return json.dumps(map(parse_date, vehicle_reports(ipt.plate,
+                                                          ipt.started,
+                                                          ipt.endend)))
+
+
+def parse_date(obj):
+    """Convert obj.datetime"""
+    obj.fecha = obj.fecha.strftime("%F %X%z")
+    return obj
+
 
 
 app_controlmonitoring = web.application(urls, locals())
