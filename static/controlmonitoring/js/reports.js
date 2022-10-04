@@ -119,14 +119,3 @@ document.addEventListener("DOMContentLoaded", () => {
         tableElement.innerHTML += `<tbody>${tableRow}</tbody>`;
     });
 });
-
-
-/*
- * [x] Auto input date.
- * [x] get plate into event 'click'.
- * [ ] the message stays.
- * [ ] create a object that trues validate.
- * [x] clearning the <tbody>
- * [ ] generate table async
- * [ ] if tbody exist and date no change, no fetch
-*/
