@@ -8,6 +8,7 @@ __copyright__ = "Copyright (c) 2012 Jorge A. Toro"
 __license__   = "BSD"
 
 # Producción
+#DB = web.database(dbn='postgres', user='rastree2', pw='qwerty', db='rastree')
 DB = web.database(dbn='postgres', user='postgres', pw='qwerty', db='rastree')
 #DB = web.database(dbn='postgres', user='rastree', pw='qwerty', db='rastree')
 
