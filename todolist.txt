@@ -1,0 +1,10 @@
+
+## Controlmonitoring
+
+[x] Auto input date.
+[x] Get plate into event 'click'.
+[ ] The message stays.
+[ ] Create a object that trues validate.
+[x] Clearning the <tbody>.
+[ ] Generate table async.
+[ ] If tbody exist and date no change, no fetch.
