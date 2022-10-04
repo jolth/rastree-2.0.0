@@ -689,7 +689,7 @@ def vehicle_reports(plate, started=None, endend=None):
 
     started = today.strftime("%Y-%m-%d") if started is None else started
     endend = today.strftime("%Y-%m-%d 23:59:59") if endend is None\
-            else "{} 23:59:59".format(endend)
+            else "{}".format(endend)
 
     try:
         query="""{query} AND p.fecha between '{started}'
