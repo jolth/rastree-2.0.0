@@ -74,8 +74,6 @@ class reports_json:
         ipt = web.input(plate=None, started=None, endend=None)
         web.header('content-type', 'application/json')
 
-        print(ipt.plate, ipt.started, ipt.endend) # testing
-        assert ipt.endend is not None
         return json.dumps(map(parse_date, vehicle_reports(ipt.plate,
                                                           ipt.started,
                                                           ipt.endend)))
