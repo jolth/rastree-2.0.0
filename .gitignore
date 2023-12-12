@@ -3,4 +3,6 @@
 *pyc
 *.aux
 sesiones/
+web/
+venvpy*
 *.[^a-z]
